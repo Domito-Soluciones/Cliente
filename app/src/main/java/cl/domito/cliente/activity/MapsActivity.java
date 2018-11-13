@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.listener.MyButtonClickListener;
 import cl.domito.cliente.listener.MyImageButtonClickListener;
 import cl.domito.cliente.listener.MyMapReadyCallBack;
 import cl.domito.cliente.listener.MyNavigationItemSelectedListener;
@@ -54,9 +58,12 @@ public class MapsActivity extends FragmentActivity   {
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new MyMapReadyCallBack(this));
-
+        LatLng southwestLatLng = new LatLng(-33.645081, -70.890807);
+        LatLng northeastLatLng = new LatLng(-33.221453, -70.425000);
         PlaceAutocompleteFragment autocompleteOrigen = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_origen);
+        autocompleteOrigen.setBoundsBias(new LatLngBounds(southwestLatLng, northeastLatLng));
         PlaceAutocompleteFragment autocompleteDestino = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_destino);
+        autocompleteDestino.setBoundsBias(new LatLngBounds(southwestLatLng, northeastLatLng));
         EditText editTextOrigen = ((EditText)autocompleteOrigen.getView().findViewById(R.id.place_autocomplete_search_input));
         EditText editTextDestino = ((EditText)autocompleteDestino.getView().findViewById(R.id.place_autocomplete_search_input));
         editTextOrigen.setTextSize(15.0f);
@@ -64,6 +71,12 @@ public class MapsActivity extends FragmentActivity   {
         editTextDestino.setTextSize(15.0f);
         editTextDestino.setHint(getString(R.string.destino));
 
+        MyButtonClickListener myButtonClickListener = new MyButtonClickListener(this);
+
+        Button button1 = findViewById(R.id.button);
+        button1.setOnClickListener(myButtonClickListener);
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(myButtonClickListener);
 
 
     }

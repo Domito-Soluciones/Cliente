@@ -50,8 +50,10 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
 
     Activity activity;
     GoogleApiClient apiClient;
-    private static String placeOrigin = null;
-    private static String placeDestiny = null;
+    public static String placeOrigin = null;
+    public static String placeDestiny = null;
+    public static String placeOriginID = null;
+    public static String placeDestinyID = null;
     public static LatLng a = null;
     public static LatLng b = null;
 
@@ -80,13 +82,16 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 placeOrigin = place.getAddress().toString();
+                placeOriginID = place.getId();
                 Log.i("TAG", "Place: " + place.getName());
                 LatLng latLng = place.getLatLng();
                 a = latLng;
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
                 MapsActivity.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-                MapsActivity.mMap.addMarker(markerOptions);
+                MapsActivity.mMap.addMarker(markerOptions)
+                //.setIcon(bitmapDescriptorFromVector(activity.getApplicationContext(),R.drawable.inicio))
+                ;
             }
 
             @Override
@@ -103,6 +108,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
             @Override
             public void onPlaceSelected(Place place) {
                 placeDestiny = place.getAddress().toString();
+                placeDestinyID = place.getId();
                 // TODO: Get info about the selected place.
                 Log.i("TAG", "Place: " + place.getName());
                 LatLng latLng = place.getLatLng();
@@ -110,7 +116,9 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
                 MapsActivity.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-                MapsActivity.mMap.addMarker(markerOptions);
+                MapsActivity.mMap.addMarker(markerOptions)
+                //.setIcon(bitmapDescriptorFromVector(activity.getApplicationContext(),R.drawable.fin))
+                ;
                 ActivityUtils.dibujarRuta(placeOrigin,placeDestiny);
             }
 

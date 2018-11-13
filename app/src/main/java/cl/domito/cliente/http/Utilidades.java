@@ -45,6 +45,7 @@ public class Utilidades {
         JSONObject json= null;
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(urlDest);
+        request.addHeader("Referer", "app-cliente");
         HttpResponse response = null;
         try {
             response = client.execute(request);
@@ -65,8 +66,8 @@ public class Utilidades {
     public static void enviarPost(String urlDest,List<NameValuePair> params) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
-
         post.setHeader("User-Agent", "");
+        post.addHeader("Referer", "app-cliente");
         try {
             post.setEntity(new UrlEncodedFormEntity(params));
             HttpResponse response = client.execute(post);
