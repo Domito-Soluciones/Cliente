@@ -7,6 +7,8 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.http.RequestUsuario;
@@ -48,14 +50,18 @@ public  class AsignacionThread extends AsyncTask {
                                         MapsActivity.servicioLayout.setVisibility(View.VISIBLE);
                                         Utilidades.GONE = false;
                                         try {
+                                            String partida = new String(servicio.getString("servicio_partida").getBytes("UTF-8"), "UTF-8");
+                                            String destino = new String(servicio.getString("servicio_destino").getBytes("UTF-8"), "UTF-8");
                                             MapsActivity.textViewNServicio.setText(servicio.getString("servicio_id"));
-                                            MapsActivity.textViewOrigen.setText(servicio.getString("servicio_partida"));
-                                            MapsActivity.textViewDestino.setText(servicio.getString("servicio_destino"));
+                                            MapsActivity.textViewOrigen.setText(partida);
+                                            MapsActivity.textViewDestino.setText(destino);
                                             MapsActivity.textViewTipo.setText(servicio.getString("servicio_tipo"));
                                             MapsActivity.textViewNombre.setText(servicio.getString("servicio_pasajero"));
                                             MapsActivity.textViewDireccion.setText(servicio.getString("servicio_pasajero_direccion"));
                                             MapsActivity.textViewCelular.setText(servicio.getString("servicio_pasajero_celular"));
                                         } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        } catch (UnsupportedEncodingException e) {
                                             e.printStackTrace();
                                         }
                                     }

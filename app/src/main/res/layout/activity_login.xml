@@ -11,13 +11,13 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="87dp"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13999999"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.120000005"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <EditText
         android:id="@+id/email"
@@ -33,7 +33,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <EditText
         android:id="@+id/password"
@@ -51,10 +51,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.41000003" />
 
     <Button
-        android:id="@+id/email_sign_in_button"
+        android:id="@+id/login_button"
         android:layout_width="@dimen/input_login_width"
         android:layout_height="@dimen/input_login_height"
         android:background="@color/colorPrimary"
@@ -67,7 +67,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/email"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintVertical_bias="0.31" />
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -83,6 +83,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:checked="true"
+        android:text="Recordarme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.84"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.62" />
 
 
 </android.support.constraint.ConstraintLayout>

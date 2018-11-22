@@ -1,11 +1,13 @@
 package cl.domito.cliente.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,12 +21,16 @@ import java.util.List;
 import cl.domito.cliente.R;
 import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.thread.LoginOperation;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mUserView;
     private EditText mPasswordView;
     private ProgressBar progressBar;
+    private CheckBox checkBoxRec;
+
+    public static boolean RECORDAR = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,44 +39,39 @@ public class LoginActivity extends AppCompatActivity {
         this.getSupportActionBar().hide();
         mUserView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.login_button);
+        checkBoxRec = findViewById(R.id.checkBox);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 login();
             }
         });
+        checkBoxRec.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recordar();
+            }
+        });
         progressBar = findViewById(R.id.login_progress);
     }
 
+    private void recordar() {
+        if(checkBoxRec.isChecked())
+        {
+                RECORDAR = true;
+    }
+        else
+    {
+        RECORDAR = false;
+    }
+}
+
     private void login() {
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-        final Toast t = Toast.makeText(this, "login erroneo", Toast.LENGTH_LONG);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "LoginUsuario.php?usuario=" + mUserView.getText().toString() + "&password=" + mPasswordView.getText().toString());
-                if (login) {
-                    Utilidades.USUARIO_ACTIVO = true;
-                    Utilidades.USER = mUserView.getText().toString();
-                    String url = Utilidades.URL_BASE_USUARIO + "HabilitarUsuario.php";
-                    List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("usuario", Utilidades.USER));
-                    Utilidades.enviarPost(url,params);
-                    Intent mainIntent = new Intent(LoginActivity.this, MapsActivity.class);
-                    //AsignacionThread asignacionThread = new AsignacionThread();
-                    //asignacionThread.execute((Object) null);
-                    LoginActivity.this.startActivity(mainIntent);
-                    LoginActivity.this.finish();
-                } else {
-                    t.show();
-                }
-            }
-        });
-        thread.start();
-
-
+        LoginOperation loginOperation = new LoginOperation(this);
+        String usuario = mUserView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        loginOperation.execute(usuario,password);
     }
 
 }
-

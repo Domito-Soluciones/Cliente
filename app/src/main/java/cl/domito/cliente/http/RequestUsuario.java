@@ -1,20 +1,27 @@
 package cl.domito.cliente.http;
 
+import com.google.gson.JsonObject;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RequestUsuario {
 
+    private static JSONObject RESPUESTA;
+    private static List<NameValuePair> PARAMS = new ArrayList<NameValuePair>();
+
+
     public static boolean loginUsuario(String reqUrl)
     {
         try {
-            JSONObject login = Utilidades.obtenerJsonObject(reqUrl);
-            if(!login.getString("id").equals("0"))
+            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+            if(!RESPUESTA.getString("id").equals("0"))
             {
                 return true;
             }
@@ -25,38 +32,35 @@ public class RequestUsuario {
         }
         return false;
     }
-    public static String datosUsuario(String reqUrl) throws JSONException {
-        JSONObject nombre = null;
+    public static JSONObject datosUsuario(String reqUrl) throws JSONException {
         try {
-            nombre = Utilidades.obtenerJsonObject(reqUrl);
-            return nombre.getString("nombre");
+            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        return nombre.getString("nombre");
+        return RESPUESTA;
     }
 
     public static JSONObject obtenerServicioAsignado(String reqUrl) {
-        JSONObject servicio = null;
-        try {
-            servicio = Utilidades.obtenerJsonObject(reqUrl);
+        try
+        {
+            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        return servicio;
+        return RESPUESTA;
     }
 
     public static void desAsignarServicio(String reqUrl,String idServicio) {
-        try {
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("id", idServicio));
-            params.add(new BasicNameValuePair("conductor",Utilidades.USER));
-            Utilidades.enviarPost(reqUrl,params);
-
+        try
+        {
+            PARAMS.add(new BasicNameValuePair("id", idServicio));
+            PARAMS.add(new BasicNameValuePair("conductor",Utilidades.USER));
+            Utilidades.enviarPost(reqUrl,PARAMS);
         }
         catch(Exception e)
         {

@@ -6,10 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/servicio"
-            android:icon="@drawable/buscar"
             android:title="Viajes" />
         <item
             android:id="@+id/salir"
             android:title="Cerrar sesión" />
     </group>
 </menu>
+
+<!-- android:icon="@drawable/buscar"-->

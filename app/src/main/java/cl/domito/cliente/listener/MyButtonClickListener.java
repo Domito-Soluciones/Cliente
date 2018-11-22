@@ -39,6 +39,8 @@ public class MyButtonClickListener implements View.OnClickListener {
                     params.add(new BasicNameValuePair("partidaId", MyMapReadyCallBack.placeOriginID));
                     params.add(new BasicNameValuePair("destino", MyMapReadyCallBack.placeDestiny));
                     params.add(new BasicNameValuePair("destinoId", MyMapReadyCallBack.placeDestinyID));
+                    params.add(new BasicNameValuePair("cliente", Utilidades.CLIENTE));
+                    params.add(new BasicNameValuePair("usuario", Utilidades.USER));
                     Utilidades.enviarPost(url,params);
                 }
             });

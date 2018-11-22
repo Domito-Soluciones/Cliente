@@ -19,7 +19,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cl.domito.cliente.R;
+import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
 import cl.domito.cliente.listener.MyButtonClickListener;
 import cl.domito.cliente.listener.MyImageButtonClickListener;
@@ -77,6 +81,22 @@ public class MapsActivity extends FragmentActivity   {
         button1.setOnClickListener(myButtonClickListener);
         Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(myButtonClickListener);
+        final String url = Utilidades.URL_BASE_USUARIO + "NombreUsuario.php?nick="+Utilidades.USER;
+        final JSONObject[] jsonObject = {null};
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    jsonObject[0] = RequestUsuario.datosUsuario(url);
+                    Utilidades.NOMBRE = jsonObject[0].getString("nombre");
+                    Utilidades.CLIENTE = jsonObject[0].getString("cliente");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
 
 
     }

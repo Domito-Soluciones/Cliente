@@ -21,7 +21,8 @@ import java.util.List;
 
 public class Utilidades {
 
-    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
@@ -33,6 +34,7 @@ public class Utilidades {
     public static boolean USUARIO_ACTIVO = false;
     public static String USER;
     public static String NOMBRE = "";
+    public static String CLIENTE = "";
     public static int CANTIDAD_VIAJES = 0;
     public static int TIEMPO_ESPERA = 30;
 

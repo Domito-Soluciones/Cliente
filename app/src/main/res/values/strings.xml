@@ -14,6 +14,6 @@
     <string name="datos_viaje">Ingrese datos de su viaje</string>
     <string name="origen">Origen</string>
     <string name="destino">Destino</string>
-    <string name="confirmar_viaje">Confirmar</string>
+    <string name="confirmar_viaje">Solicitar</string>
     <string name="cancelar_viaje">Cancelar</string>
 </resources>
