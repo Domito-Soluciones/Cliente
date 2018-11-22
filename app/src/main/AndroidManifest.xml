@@ -14,20 +14,24 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
+            android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
 
-        <activity android:name="cl.domito.cliente.activity.SplashScreenActivity">
+        <activity android:name=".activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cl.domito.cliente.activity.MapsActivity" />
+        <activity android:name=".activity.MapsActivity" />
         <activity
-            android:name="cl.domito.cliente.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="" />
-        <activity android:name="cl.domito.cliente.activity.ServicioActivity" />
+        <activity android:name=".activity.ServicioActivity" />
+        <activity
+            android:name=".activity.AsignarServicioActivity"
+            android:label="@string/title_activity_asignar_servicio"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

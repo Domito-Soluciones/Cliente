@@ -1,6 +1,5 @@
 package cl.domito.cliente.activity.utils;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -29,7 +28,7 @@ import java.util.List;
 
 import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.http.Utilidades;
-import cl.domito.cliente.listener.MyMapReadyCallBack;
+import cl.domito.cliente.usuario.MyMapReadyCallBack;
 
 public class ActivityUtils {
 
@@ -114,5 +113,7 @@ public class ActivityUtils {
         latLngBounds.include(MyMapReadyCallBack.a).include(MyMapReadyCallBack.b);
         MapsActivity.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
     }
+
+
 
 }

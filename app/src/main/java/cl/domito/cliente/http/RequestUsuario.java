@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.cliente.usuario.Usuario;
+
 public class RequestUsuario {
 
     private static JSONObject RESPUESTA;
@@ -59,7 +61,7 @@ public class RequestUsuario {
         try
         {
             PARAMS.add(new BasicNameValuePair("id", idServicio));
-            PARAMS.add(new BasicNameValuePair("conductor",Utilidades.USER));
+            PARAMS.add(new BasicNameValuePair("conductor",Usuario.getInstance().getId()));
             Utilidades.enviarPost(reqUrl,PARAMS);
         }
         catch(Exception e)

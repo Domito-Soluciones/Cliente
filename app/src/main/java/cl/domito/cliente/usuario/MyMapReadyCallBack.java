@@ -1,4 +1,4 @@
-package cl.domito.cliente.listener;
+package cl.domito.cliente.usuario;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -23,11 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.MapsActivity;
-import cl.domito.cliente.activity.utils.ActivityUtils;
 
 /**
  * Created by elsan on 01-05-2018.
@@ -74,7 +67,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
                 .addApi(LocationServices.API)
                 .build();
 
-        PlaceAutocompleteFragment autocompleteOrigen = (PlaceAutocompleteFragment)
+       /* PlaceAutocompleteFragment autocompleteOrigen = (PlaceAutocompleteFragment)
                 this.activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_origen);
 
         autocompleteOrigen.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -129,8 +122,9 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
             }
         });
 
-
+*/
     }
+
 
     private void updateUI(Location loc) {
         if (loc != null) {

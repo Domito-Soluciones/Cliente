@@ -13,15 +13,16 @@ import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.usuario.Usuario;
 
 public  class AsignacionThread extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] objects) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ServiciosAsignado.php?user="+Utilidades.USER;
+        String url = Utilidades.URL_BASE_SERVICIO + "ServiciosAsignado.php?user="+Usuario.getInstance().getId();
         String urlDes = Utilidades.URL_BASE_SERVICIO + "DesAsignarServicio.php";
         while(true) {
-            if(Utilidades.USUARIO_ACTIVO)
+            if(Usuario.getInstance().isActivo())
             {
                 Log.i("EJECUTANDO THREAD","EJECUTANDO THREAD");
                 try {

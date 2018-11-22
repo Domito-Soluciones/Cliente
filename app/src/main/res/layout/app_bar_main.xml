@@ -20,13 +20,13 @@
             android:layout_height="60dp">
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewMenu"
                 android:layout_width="@dimen/largo_menu"
                 android:layout_height="@dimen/ancho_menu"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="15dp"
-                android:visibility="visible"
                 android:src="@drawable/menu"
+                android:visibility="visible"
 
                 />
 <!--android:src="@drawable/ic_menu-->
@@ -40,13 +40,13 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout4"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="@dimen/heigth_layout_partida"
         android:layout_gravity="top|center"
         android:layout_marginTop="60dp"
-        android:background="@color/colorBlanco"
+        android:background="@android:color/transparent"
         android:elevation="0dp">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/partida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,9 +59,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.32"
-            tools:text="Origen" />
+            tools:text="Origen" />-->
 
-        <TextView
+        <!--<TextView
             android:id="@+id/destino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,9 +74,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.6"
-            tools:text="Destino" />
+            tools:text="Destino" />-->
 
-        <fragment
+        <!--<fragment
             android:id="@+id/place_autocomplete_origen"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             android:layout_width="300dp"
@@ -86,10 +86,10 @@
             app:layout_constraintHorizontal_bias="0.85"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32999998" />
+            app:layout_constraintVertical_bias="0.32999998" />-->
 
 
-        <fragment
+        <!--<fragment
             android:id="@+id/place_autocomplete_destino"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             android:layout_width="300dp"
@@ -99,25 +99,75 @@
             app:layout_constraintHorizontal_bias="0.85"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.6" />-->
 
 
         <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
+            android:id="@+id/textViewPartida"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/blanco"
+            android:padding="@dimen/padding_Y_label_partida"
+            android:paddingTop="@dimen/padding_Y_label_partida"
+            android:paddingBottom="@dimen/padding_Y_label_partida"
+            android:shadowColor="@color/negro"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:shadowRadius="2"
             android:text="@string/datos_viaje"
-            android:textSize="@dimen/text_size_ppal"
-            android:textStyle="bold"
+            android:textSize="@dimen/label_partida_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.120000005"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="@string/datos_viaje" />
 
-        <Button
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/blanco"
+            android:padding="@dimen/padding_Y_label_partida"
+            android:paddingTop="@dimen/padding_Y_label_partida"
+            android:paddingBottom="@dimen/padding_Y_label_partida"
+            android:textSize="@dimen/label_partida_size"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPartida" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/blanco"
+            android:padding="@dimen/padding_Y_label_partida"
+            android:paddingTop="@dimen/padding_Y_label_partida"
+            android:paddingBottom="@dimen/padding_Y_label_partida"
+            android:textSize="@dimen/label_partida_size"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <!--<Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,7 +189,7 @@
             app:layout_constraintHorizontal_bias="0.71"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.90999997" />
+            app:layout_constraintVertical_bias="0.90999997" />-->
     </android.support.constraint.ConstraintLayout>
 
 

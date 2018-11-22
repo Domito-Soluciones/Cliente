@@ -1,20 +1,7 @@
-package cl.domito.cliente.listener;
+package cl.domito.cliente.usuario;
 
 import android.app.Activity;
-import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.EditText;
-
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import cl.domito.cliente.R;
-import cl.domito.cliente.http.Utilidades;
 
 public class MyButtonClickListener implements View.OnClickListener {
 
@@ -27,7 +14,7 @@ public class MyButtonClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.button)
+        /*if(v.getId() == R.id.button)
         {
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -51,6 +38,6 @@ public class MyButtonClickListener implements View.OnClickListener {
         else if(v.getId() == R.id.button2)
         {
 
-        }
+        }*/
     }
 }

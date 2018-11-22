@@ -31,8 +31,6 @@ public class Utilidades {
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
     public static String URL_BASE_USUARIO = URL_BASE + "usuario/";
 
-    public static boolean USUARIO_ACTIVO = false;
-    public static String USER;
     public static String NOMBRE = "";
     public static String CLIENTE = "";
     public static int CANTIDAD_VIAJES = 0;

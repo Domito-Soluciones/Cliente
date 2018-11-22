@@ -9,7 +9,5 @@
 
     <include layout="@layout/app_bar_secon"/>
 
-    <include layout="@layout/content_servicio" />
-
 
 </android.support.design.widget.CoordinatorLayout>

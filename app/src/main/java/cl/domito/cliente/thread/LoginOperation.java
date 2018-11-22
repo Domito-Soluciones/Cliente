@@ -17,6 +17,7 @@ import cl.domito.cliente.activity.LoginActivity;
 import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.usuario.Usuario;
 
 public class LoginOperation extends AsyncTask<String, Void, Void> {
 
@@ -39,11 +40,12 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO +
                 "LoginUsuario.php?usuario=" + strings[0] + "&password=" + strings[1]);
         if (login) {
-            Utilidades.USUARIO_ACTIVO = true;
-            Utilidades.USER = strings[0];
+            Usuario usuario = Usuario.getInstance();
+            usuario.setActivo(true);
+            usuario.setId(strings[0]);
             String url = Utilidades.URL_BASE_USUARIO + "HabilitarUsuario.php";
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("usuario", Utilidades.USER));
+            params.add(new BasicNameValuePair("usuario", usuario.getId()));
             Utilidades.enviarPost(url,params);
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);

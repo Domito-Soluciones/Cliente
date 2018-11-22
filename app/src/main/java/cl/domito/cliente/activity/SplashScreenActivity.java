@@ -14,13 +14,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final long SPLASH_SCREEN_DELAY = 3000;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /** INICIALIZACION ACTIVITY **/
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
+        /** INICIALIZACION HANDLER **/
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             @Override

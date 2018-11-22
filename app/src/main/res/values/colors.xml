@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorBlanco">#ffffff</color>
-    <color name="colorGris">#eeeeee</color>
+    <color name="blanco">#ffffff</color>
+    <color name="gris">#EEEEEE</color>
+    <color name="negro" >#000000</color>
 </resources>
