@@ -6,26 +6,46 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import cl.domito.cliente.R;
 
 public class AsignarServicioActivity extends AppCompatActivity {
 
+    ImageView imageViewAtras;
+    ImageView imageViewMas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /** INICIALIZACION ACTIVITY **/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asignar_servicio);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        /** INICIALIZACION VIEW **/
+        imageViewAtras = findViewById(R.id.imageViewAtras);
+        imageViewMas = findViewById(R.id.imageViewMas);
+        /** INICIALIZACION EVENTO BOTON DE ATRAS **/
+        imageViewMas.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                volver();
             }
         });
+        /** INICIALIZACION EVENTO BOTON MAS **/
+        imageViewMas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarDestino();
+            }
+        });
+    }
+
+
+    private void volver() {
+        this.finish();
+    }
+
+    private void agregarDestino() {
+
     }
 
 }

@@ -49,6 +49,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
     public static String placeDestinyID = null;
     public static LatLng a = null;
     public static LatLng b = null;
+    MarkerOptions markerOptions;
 
     public MyMapReadyCallBack(Activity activity) {
         this.activity = activity;
@@ -60,6 +61,14 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
         MapsActivity.mMap.getUiSettings().setMyLocationButtonEnabled(false);
         boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 this.activity, R.raw.map_style));
+
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                Log.i("centerLat",googleMap.getCameraPosition().target.latitude+"");
+                Log.i("centerLong",googleMap.getCameraPosition().target.longitude+"");
+            }
+        });
 
         apiClient = new GoogleApiClient.Builder(this.activity)
                 .enableAutoManage((FragmentActivity) this.activity, this)
@@ -131,7 +140,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
             LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
             MapsActivity.mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+            markerOptions = new MarkerOptions().position(latLng);
             MapsActivity.mMap.addMarker(markerOptions).setTitle("Ubicacion");
 
         } else {

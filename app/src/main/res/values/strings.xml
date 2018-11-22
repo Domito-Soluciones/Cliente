@@ -11,4 +11,6 @@
     <string name="confirmar_viaje">Solicitar</string>
     <string name="cancelar_viaje">Cancelar</string>
     <string name="title_activity_asignar_servicio">AsignarServicioActivity</string>
+    <string name="punto_partida">Ingrese punto de partida</string>
+    <string name="punto_destino">Ingrese punto de destino</string>
 </resources>

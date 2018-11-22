@@ -45,6 +45,7 @@ public class MapsActivity extends FragmentActivity   {
     private NavigationView  navigationView;
     private DrawerLayout drawerLayout;
     private TextView textViewInicio;
+    ImageView imageViewPoint;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -57,6 +58,7 @@ public class MapsActivity extends FragmentActivity   {
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         textViewInicio  = findViewById(R.id.textViewPartida);
+        imageViewPoint = findViewById(R.id.imageViewPointer);
         /** INICIALIZACION EVENTO BOTON DE MENU **/
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class MapsActivity extends FragmentActivity   {
         textViewInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                abrirBuscadorServicios();
             }
         });
 
@@ -141,6 +143,14 @@ public class MapsActivity extends FragmentActivity   {
         navigationView.bringToFront();
         drawerLayout.requestLayout();
     }
+
+    private void abrirBuscadorServicios()
+    {
+        mMap.clear();
+        imageViewPoint.setVisibility(View.VISIBLE);
+        Intent mainIntent = new Intent(this, AsignarServicioActivity.class);
+        this.startActivity(mainIntent);
+}
 
     private boolean getMenuContextual(MenuItem menuItem) {
         int id = menuItem.getItemId();

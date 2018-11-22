@@ -14,5 +14,8 @@
     <dimen name="label_partida_size">30sp</dimen>
     <dimen name="heigth_layout_partida">220dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="height_toolbar_asignar">128dp</dimen>
+    <dimen name="tamanio_boton_volver">40dp</dimen>
+    <dimen name="largo_partida_label">40dp</dimen>
 
 </resources>
