@@ -17,38 +17,7 @@ public class ServicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicio);
         this.getSupportActionBar().hide();
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
-        TextView textView = findViewById(R.id.nombre);
-        textView.setText(Utilidades.NOMBRE);
-
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-        tabs.setOnTabSelectedListener(
-                new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-
-                    }
-                }
-        );
     }
 
 }

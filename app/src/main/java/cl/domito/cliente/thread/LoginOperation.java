@@ -1,8 +1,12 @@
 package cl.domito.cliente.thread;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -15,13 +19,15 @@ import java.util.List;
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.LoginActivity;
 import cl.domito.cliente.activity.MapsActivity;
+import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
-import cl.domito.cliente.usuario.Usuario;
+import cl.domito.cliente.dominio.Usuario;
 
 public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     WeakReference<LoginActivity> context;
+    TextView textViewError;
 
     public LoginOperation(LoginActivity activity) {
         context = new WeakReference<LoginActivity>(activity);
@@ -29,6 +35,8 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
+        Usuario usuario = Usuario.getInstance();
+        usuario.setConectado(true);
         LoginActivity loginActivity = context.get();
         ProgressBar progressBar = loginActivity.findViewById(R.id.login_progress);
         loginActivity.runOnUiThread(new Runnable() {
@@ -39,10 +47,16 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         });
         boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO +
                 "LoginUsuario.php?usuario=" + strings[0] + "&password=" + strings[1]);
+        loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
-            Usuario usuario = Usuario.getInstance();
             usuario.setActivo(true);
-            usuario.setId(strings[0]);
+            usuario.setNick(strings[0]);
+            if(usuario.isRecordarSession()) {
+                SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
+                        (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
+                ActivityUtils.guardarSharedPreferences(pref,loginActivity.getString(
+                        R.string.sharedPreferenceKeyUser),usuario.getId());
+            }
             String url = Utilidades.URL_BASE_USUARIO + "HabilitarUsuario.php";
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("usuario", usuario.getId()));
@@ -54,7 +68,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast t = Toast.makeText(loginActivity, "Login Erroneo", Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(loginActivity, "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
                     t.show();
                     progressBar.setVisibility(ProgressBar.GONE);
                 }
