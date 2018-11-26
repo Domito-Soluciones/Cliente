@@ -1,7 +1,5 @@
 package cl.domito.cliente.http;
 
-import com.google.gson.JsonObject;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -11,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.domito.cliente.usuario.Usuario;
+import cl.domito.cliente.dominio.Usuario;
 
 public class RequestUsuario {
 
@@ -22,10 +20,11 @@ public class RequestUsuario {
     public static boolean loginUsuario(String reqUrl)
     {
         try {
-            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
-            if(!RESPUESTA.getString("id").equals("0"))
-            {
-                return true;
+            if(Usuario.getInstance().isConectado()) {
+                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                if (!RESPUESTA.getString("id").equals("0")) {
+                    return true;
+                }
             }
         }
         catch(Exception e)
@@ -36,37 +35,14 @@ public class RequestUsuario {
     }
     public static JSONObject datosUsuario(String reqUrl) throws JSONException {
         try {
-            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+            if(Usuario.getInstance().isConectado()) {
+                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+            }
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
         return RESPUESTA;
-    }
-
-    public static JSONObject obtenerServicioAsignado(String reqUrl) {
-        try
-        {
-            RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return RESPUESTA;
-    }
-
-    public static void desAsignarServicio(String reqUrl,String idServicio) {
-        try
-        {
-            PARAMS.add(new BasicNameValuePair("id", idServicio));
-            PARAMS.add(new BasicNameValuePair("conductor",Usuario.getInstance().getId()));
-            Utilidades.enviarPost(reqUrl,PARAMS);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }

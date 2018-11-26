@@ -2,8 +2,8 @@
 
     <dimen name="input_texto_login">20sp</dimen>
     <dimen name="text_size_ppal">15dp</dimen>
-    <dimen name="largo_menu">30dp</dimen>
-    <dimen name="ancho_menu">30dp</dimen>
+    <dimen name="largo_menu">20dp</dimen>
+    <dimen name="ancho_menu">20dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="width_nav">250dp</dimen>
     <dimen name="width_img_nav">200dp</dimen>
@@ -11,11 +11,15 @@
     <dimen name="input_login_height">50dp</dimen>
     <dimen name="padding_Y_label_partida">13dp</dimen>
     <dimen name="padding_X_label_partida">100dp</dimen>
-    <dimen name="label_partida_size">30sp</dimen>
+    <dimen name="label_partida_size">20sp</dimen>
     <dimen name="heigth_layout_partida">220dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="height_toolbar_asignar">128dp</dimen>
     <dimen name="tamanio_boton_volver">40dp</dimen>
     <dimen name="largo_partida_label">40dp</dimen>
+    <dimen name="toolbar_expandido">120dp</dimen>
+
+    <dimen name="width_icon">40dp</dimen>
+    <dimen name="height_icon">40dp</dimen>
 
 </resources>

@@ -1,38 +1,52 @@
 package cl.domito.cliente.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 
 import cl.domito.cliente.R;
+import cl.domito.cliente.dominio.Usuario;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static final long SPLASH_SCREEN_DELAY = 3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /** INICIALIZACION ACTIVITY **/
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
-        /** INICIALIZACION HANDLER **/
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
+        Usuario.getInstance().setConectado(true);
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this,LoginActivity.class);
-                SplashScreenActivity.this.startActivity(mainIntent);
-                SplashScreenActivity.this.finish();
-                handler.removeCallbacksAndMessages(null);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences
+                        (getString(R.string.sharedPreferenceFile), Context.MODE_PRIVATE);
+                String idUsuario = pref.getString(getString(R.string.sharedPreferenceKeyUser),
+                        "0");
+                if(!idUsuario.equals("0"))
+                {
+                    Usuario.getInstance().setNick(idUsuario);
+                    Intent mainIntent = new Intent(SplashScreenActivity.this,MapsActivity.class);
+                    SplashScreenActivity.this.startActivity(mainIntent);
+                    SplashScreenActivity.this.finish();
+                    handler.removeCallbacksAndMessages(null);
+                }
+                else {
+                    Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    SplashScreenActivity.this.startActivity(mainIntent);
+                    SplashScreenActivity.this.finish();
+                    handler.removeCallbacksAndMessages(null);
+                }
             }
-        }, 3000);
-
+        }, 2000);
     }
 
     @Override
