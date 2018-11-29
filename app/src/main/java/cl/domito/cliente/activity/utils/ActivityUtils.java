@@ -42,6 +42,7 @@ import com.google.maps.model.EncodedPolyline;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,10 +97,10 @@ public class ActivityUtils {
         return addressComponents;
     }
 
-    public static JSONArray getPlaces(Activity activity, String latitud, String longitud) {
+    public static JSONArray getPlaces(Activity activity, String latitud, String longitud,String input) {
         JSONArray results = null;
         try {
-            String url = URL_PLACES + "input=moda&location="+latitud+","+longitud+"&sensor=true&radius=1000&key="+activity.getString(R.string.api_key);
+            String url = URL_PLACES + "input="+URLEncoder.encode(input, "utf8")+"&location="+latitud+","+longitud+"&sensor=true&radius=1000&key="+activity.getString(R.string.api_key);
             JSONObject json = Utilidades.obtenerJsonObject(url);
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {

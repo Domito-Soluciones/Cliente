@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -33,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,6 +45,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
@@ -48,6 +56,7 @@ import cl.domito.cliente.thread.AddressOperation;
 import cl.domito.cliente.thread.AgregarServicioOperation;
 import cl.domito.cliente.thread.DatosUsuarioOperation;
 import cl.domito.cliente.dominio.Usuario;
+import cl.domito.cliente.thread.PlacesOperation;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
 {
@@ -101,18 +110,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DatosUsuarioOperation datosUsuarioOperation = new DatosUsuarioOperation(this);
         datosUsuarioOperation.execute();
 
-        editTextPartida.setOnKeyListener(new View.OnKeyListener() {
+        editTextPartida.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                constrainLayoutPlaces.setVisibility(View.VISIBLE);
+            }
 
-                return false;
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                obtenerPlaces(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
-        editTextDestino.setOnKeyListener(new View.OnKeyListener() {
+        editTextDestino.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                constrainLayoutPlaces.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                obtenerPlaces(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -265,11 +293,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         constrainLayoutConfirmarViaje.setVisibility(View.VISIBLE);
     }
 
-
     private void agregarServicio() {
         AgregarServicioOperation agregarServicioOperation = new AgregarServicioOperation(this);
         agregarServicioOperation.execute();
 
+    }
+
+    private void obtenerPlaces(String input) {
+        PlacesOperation placesOperation = new PlacesOperation(this);
+        placesOperation.execute(input);
     }
 
     @Override
