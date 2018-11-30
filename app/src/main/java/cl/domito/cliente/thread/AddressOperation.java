@@ -22,19 +22,19 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
     private Button botonIniciar;
 
     public AddressOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
-    }
-
-    @Override
-    protected String doInBackground(String... strings) {
-        String tipo = strings[2];
-        if(tipo.equals(Usuario.BUSCAR_PARTIDA)) {
-            editTextACompletar = context.get().findViewById(R.id.editTextPartida);
-            editTextDestino = context.get().findViewById(R.id.editTextDestino);
+            context = new WeakReference<MapsActivity>(activity);
         }
-        else if(tipo.equals(Usuario.BUSCAR_DESTINO))
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String tipo = strings[2];
+            if(tipo.equals(Usuario.BUSCAR_PARTIDA+"")) {
+                editTextACompletar = context.get().findViewById(R.id.editTextPartida);
+                editTextDestino = context.get().findViewById(R.id.editTextDestino);
+            }
+        else if(tipo.equals(Usuario.BUSCAR_DESTINO+""))
         {
-            botonIniciar = context.get().findViewById(R.id.button2);
+            botonIniciar = context.get().findViewById(R.id.buttonSolicitar);
             editTextACompletar = context.get().findViewById(R.id.editTextDestino);
         }
         context.get().runOnUiThread(new Runnable() {
@@ -56,7 +56,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
             public void run() {
                 editTextACompletar.setText(s);
                 if(editTextDestino != null) {
-                    editTextDestino.requestFocus();
+                    //editTextDestino.requestFocus();
                 }
                 else
                 {

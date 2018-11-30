@@ -5,8 +5,13 @@ import com.google.android.gms.maps.model.LatLng;
 public class Usuario {
 
     private static Usuario instance;
-    public static String BUSCAR_PARTIDA = "0";
-    public static String BUSCAR_DESTINO = "1";
+
+    public static int BUSCAR_PARTIDA = 0;
+    public static int BUSCAR_DESTINO = 1;
+
+    public static int SELECCIONAR_UBICACION = 0;
+    public static int SELECCIONAR_PLACES = 1;
+    public static int SELECCIONAR_MAPA = 2;
 
     private String id;
     private String nombre;
@@ -25,6 +30,9 @@ public class Usuario {
     private String placeIdDestino;
     private String placeIdDestinoNombre;
     private boolean conectado;
+    private int tipoBusqueda;
+    private boolean busquedaRealizada;
+    private String idViaje;
 
     public static synchronized Usuario getInstance(){
         if(instance == null){
@@ -168,4 +176,29 @@ public class Usuario {
     public void setConectado(boolean conectado) {
         this.conectado = conectado;
     }
+
+    public int getTipoBusqueda() {
+        return tipoBusqueda;
+    }
+
+    public void setTipoBusqueda(int tipoBusqueda) {
+        this.tipoBusqueda = tipoBusqueda;
+    }
+
+    public boolean isBusquedaRealizada() {
+        return busquedaRealizada;
+    }
+
+    public void setBusquedaRealizada(boolean busquedaRealizada) {
+        this.busquedaRealizada = busquedaRealizada;
+    }
+
+    public String getIdViaje() {
+        return idViaje;
+    }
+
+    public void setIdViaje(String idViaje) {
+        this.idViaje = idViaje;
+    }
+
 }

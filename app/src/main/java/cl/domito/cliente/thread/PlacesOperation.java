@@ -3,6 +3,7 @@ package cl.domito.cliente.thread;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
@@ -27,8 +28,8 @@ public class PlacesOperation extends AsyncTask<String, Void, Void> {
     TextView textView2;
     TextView textView3;
     TextView textView4;
-    TextView textView5;
-    TextView textView6;
+    EditText editTextPartida;
+    EditText editTextDestino;
 
     public PlacesOperation(MapsActivity activity) {
         context = new WeakReference<MapsActivity>(activity);
@@ -44,47 +45,62 @@ public class PlacesOperation extends AsyncTask<String, Void, Void> {
         textView2 = mapsActivity.findViewById(R.id.textViewRes2);
         textView3 = mapsActivity.findViewById(R.id.textViewRes3);
         textView4 = mapsActivity.findViewById(R.id.textViewRes4);
-        textView5 = mapsActivity.findViewById(R.id.textViewRes5);
-        textView6 = mapsActivity.findViewById(R.id.textViewRes6);
-        JSONArray jsonArray = ActivityUtils.getPlaces(mapsActivity,latitud,longitud,strings[0]);
-        if(jsonArray != null) {
+        editTextPartida = mapsActivity.findViewById(R.id.editTextPartida);
+        editTextDestino = mapsActivity.findViewById(R.id.editTextDestino);
+        JSONArray jsonArray = ActivityUtils.getPlaces(mapsActivity, latitud, longitud, strings[0]);
+        if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
-                if(i < 6) {
-                    try {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        String place = jsonObject.getString("description");
-                        switch (i) {
-                            case 0:
-                                textView1.setVisibility(View.VISIBLE);
-                                textView1.setText(place);
-                                break;
-                            case 1:
-                                textView2.setVisibility(View.VISIBLE);
-                                textView2.setText(place);
-                                break;
-                            case 2:
-                                textView3.setVisibility(View.VISIBLE);
-                                textView3.setText(place);
-                                break;
-                            case 3:
-                                textView4.setVisibility(View.VISIBLE);
-                                textView4.setText(place);
-                                break;
-                            case 4:
-                                textView5.setVisibility(View.VISIBLE);
-                                textView5.setText(place);
-                                break;
-                            case 5:
-                                textView6.setVisibility(View.VISIBLE);
-                                textView6.setText(place);
-                                break;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    if (i < 4) {
+                        int finalI = i;
+                        mapsActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    String place = jsonObject.getString("description");
+                                    String placeId = jsonObject.getString("place_id");
+                                    Usuario usuario = Usuario.getInstance();
+                                    switch (finalI) {
+                                        case 0:
+                                            textView1.setVisibility(View.VISIBLE);
+                                            textView1.setText(place);
+                                            break;
+                                        case 1:
+                                            textView2.setVisibility(View.VISIBLE);
+                                            textView2.setText(place);
+                                            break;
+                                        case 2:
+                                            textView3.setVisibility(View.VISIBLE);
+                                            textView3.setText(place);
+                                            break;
+                                        case 3:
+                                            textView4.setVisibility(View.VISIBLE);
+                                            textView4.setText(place);
+                                            break;
+                                    }
+                                    if(editTextPartida.isFocused())
+                                    {
+                                        usuario.setPlaceIdOrigen(placeId);
+                                        usuario.setPlaceIdOrigenNombre(place);
+                                    }
+                                    else
+                                    {
+                                        usuario.setPlaceIdDestino(placeId);
+                                        usuario.setPlaceIdDestinoNombre(place);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
         return null;
     }
+
 }

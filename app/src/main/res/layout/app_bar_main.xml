@@ -20,7 +20,7 @@
         android:visibility="gone" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBarGeneral"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="125dp"
@@ -28,7 +28,7 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonSolicitar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/input_login_height"
         android:layout_gravity="bottom"
@@ -336,20 +336,18 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:background="@color/blanco"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constrainLayoutIngresaViaje">
+        app:layout_constraintTop_toBottomOf="@+id/constrainLayoutIngresaViaje"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="458dp">
 
         <TextView
             android:id="@+id/textViewMapa"
-            android:layout_width="360dp"
+            android:layout_width="0dp"
             android:layout_height="51dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/fab_margin"
+            android:paddingLeft="@dimen/height_icon"
             android:text="@string/sel_mapa"
             android:textSize="@dimen/label_partida_size"
             android:textStyle="bold"
@@ -359,31 +357,10 @@
             tools:text="@string/sel_mapa" />
 
         <TextView
-            android:id="@+id/textViewRes6"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/input_texto_login"
-            android:textSize="@dimen/label_partida_size"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewRes5"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
             android:id="@+id/textViewRes1"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/fab_margin"
+            android:paddingLeft="@dimen/height_icon"
             android:textSize="@dimen/label_partida_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -396,12 +373,8 @@
             android:id="@+id/textViewRes2"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/fab_margin"
+            android:paddingLeft="@dimen/height_icon"
             android:textSize="@dimen/label_partida_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -414,11 +387,7 @@
             android:id="@+id/textViewRes3"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/fab_margin"
+            android:paddingLeft="@dimen/height_icon"
             android:textSize="@dimen/label_partida_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -431,11 +400,7 @@
             android:id="@+id/textViewRes4"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/fab_margin"
+            android:paddingLeft="@dimen/height_icon"
             android:textSize="@dimen/label_partida_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -444,22 +409,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewRes3"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/textViewRes5"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingLeft="@dimen/input_texto_login"
-            android:textSize="@dimen/label_partida_size"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewRes4"
-            app:layout_constraintVertical_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
 
 

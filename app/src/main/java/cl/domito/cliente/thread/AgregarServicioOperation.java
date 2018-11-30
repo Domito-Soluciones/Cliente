@@ -44,7 +44,8 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
         params.add(new BasicNameValuePair("destinoId", usuario.getPlaceIdDestino()));
         params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
         params.add(new BasicNameValuePair("usuario", usuario.getNick()));
-        Utilidades.enviarPost(url,params);
+        String idServicio = Utilidades.enviarPost(url,params);
+        usuario.setIdViaje(idServicio);
         context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
         return null;
     }

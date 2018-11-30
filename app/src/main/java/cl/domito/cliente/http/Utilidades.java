@@ -67,7 +67,8 @@ public class Utilidades {
 
         return jObject;
     }
-    public static void enviarPost(String urlDest,List<NameValuePair> params) {
+    public static String enviarPost(String urlDest,List<NameValuePair> params) {
+        StringBuffer result = new StringBuffer();
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");
@@ -80,7 +81,6 @@ public class Utilidades {
             BufferedReader rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
 
-            StringBuffer result = new StringBuffer();
             String line = "";
             while ((line = rd.readLine()) != null) {
                 result.append(line);
@@ -95,6 +95,7 @@ public class Utilidades {
         catch (Exception e) {
             e.printStackTrace();
         }
+        return  result.toString();
     }
 
 

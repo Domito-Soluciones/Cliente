@@ -49,6 +49,7 @@ import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
@@ -81,7 +82,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EditText editTextPartida;
     private EditText editTextDestino;
     private ProgressBar progressBar;
+    private TextView textViewMapa;
+    private TextView textView1;
+    private TextView textView2;
+    private TextView textView3;
+    private TextView textView4;
     private LocationManager locationManager;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mMap != null) {
+            mMap.clear();
+            constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
+            constrainLayoutConfirmarViaje.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         navigationView = findViewById(R.id.nav_view);
         textViewInicio  = findViewById(R.id.textViewPartida);
         imageViewPoint = findViewById(R.id.imageViewPointer);
-        buttonSolicitar = findViewById(R.id.button2);
+        buttonSolicitar = findViewById(R.id.buttonSolicitar);
         buttonConfirmar = findViewById(R.id.button);
         textViewDetalleOrigen = findViewById(R.id.detalleOrigenValor);
         textViewDetalleDestino = findViewById(R.id.detalleDestinoValor);
@@ -104,16 +120,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         constrainLayoutInicioViaje = findViewById(R.id.constrainLayoutInicioViaje);
         constrainLayoutConfirmarViaje = findViewById(R.id.constrainLayoutConfirmarViaje);
         constrainLayoutPlaces = findViewById(R.id.constrainLayoutPlaces);
-        progressBar = findViewById(R.id.progressBar2);
+        progressBar = findViewById(R.id.progressBarGeneral);
+        textViewMapa = findViewById(R.id.textViewMapa);
+        textView1 = findViewById(R.id.textViewRes1);
+        textView2 = findViewById(R.id.textViewRes2);
+        textView3 = findViewById(R.id.textViewRes3);
+        textView4 = findViewById(R.id.textViewRes4);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        DatosUsuarioOperation datosUsuarioOperation = new DatosUsuarioOperation(this);
+            DatosUsuarioOperation datosUsuarioOperation = new DatosUsuarioOperation(this);
         datosUsuarioOperation.execute();
+
+        editTextPartida.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                    editTextPartida.clearFocus();
+                    editTextPartida.requestFocus();
+                }
+            });
+        editTextDestino.setOnClickListener(new View.OnClickListener() {
+                @Override
+            public void onClick(View v) {
+                Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                editTextDestino.clearFocus();
+                editTextDestino.requestFocus();
+            }
+        });
 
         editTextPartida.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                constrainLayoutPlaces.setVisibility(View.VISIBLE);
+                abrirNavegadorPlaces();
             }
 
             @Override
@@ -130,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         editTextDestino.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                constrainLayoutPlaces.setVisibility(View.VISIBLE);
+                abrirNavegadorPlaces();
             }
 
             @Override
@@ -184,9 +222,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        textViewMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarDestinoMapa(v);
+            }
+        });
+
+        textView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dibujarRutaDesdePlaces(v);
+                solicitarViaje();
+            }
+        });
+        textView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dibujarRutaDesdePlaces(v);
+                solicitarViaje();
+            }
+        });
+        textView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dibujarRutaDesdePlaces(v);
+                solicitarViaje();
+            }
+        });
+        textView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dibujarRutaDesdePlaces(v);
+                solicitarViaje();
+            }
+        });
+
 
         mapFragment.getMapAsync(this);
         navigationView.setItemIconTintList(null);
+        Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_UBICACION);
+        editTextPartida.setSelectAllOnFocus(true);
+        editTextDestino.setSelectAllOnFocus(true);
     }
 
 
@@ -217,7 +294,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageViewPoint.setVisibility(View.VISIBLE);
         Usuario usuario = Usuario.getInstance();
         AddressOperation addressOperation = new AddressOperation(this);
-        addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "",Usuario.BUSCAR_PARTIDA);
+        addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "",Usuario.BUSCAR_PARTIDA+"");
     }
 
     private void volver()
@@ -225,6 +302,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Usuario.getInstance().setBuscaServicio(false);
         constraintLayoutToolbar.setVisibility(View.VISIBLE);
         constrainLayoutIngresaViaje.setVisibility(View.GONE);
+        constrainLayoutPlaces.setVisibility(View.GONE);
         constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
         imageViewPoint.setVisibility(View.GONE);
     }
@@ -260,6 +338,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        googleMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int i) {
+
+            }
+        });
+
         apiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage((FragmentActivity) this, this)
                 .addConnectionCallbacks(this)
@@ -268,18 +353,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void agregarPuntoDestino() {
+        ActivityUtils.hideSoftKeyBoard(this);
         if(Usuario.getInstance().isBuscaServicio())
         {
             String latitud = mMap.getCameraPosition().target.latitude+"";
             String longitud = mMap.getCameraPosition().target.longitude+"";
             AddressOperation addressOperation = new AddressOperation(this);
-            addressOperation.execute(latitud,longitud,Usuario.BUSCAR_DESTINO);
+            if(editTextPartida.isFocused())
+            {
+                addressOperation.execute(latitud,longitud,Usuario.BUSCAR_PARTIDA+"");
+            }
+            else
+            {
+                addressOperation.execute(latitud,longitud,Usuario.BUSCAR_DESTINO+"");
+            }
         }
     }
 
     private void solicitarViaje() {
         progressBar.setVisibility(View.VISIBLE);
         Usuario.getInstance().setBuscaServicio(false);
+        Usuario.getInstance().setBusquedaRealizada(true);
         buttonSolicitar.setVisibility(View.GONE);
         String partida = Usuario.getInstance().getPlaceIdOrigen();
         String destino = Usuario.getInstance().getPlaceIdDestino();
@@ -300,8 +394,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void obtenerPlaces(String input) {
-        PlacesOperation placesOperation = new PlacesOperation(this);
-        placesOperation.execute(input);
+        Usuario usuario = Usuario.getInstance();
+        if(usuario.getTipoBusqueda() == Usuario.SELECCIONAR_PLACES) {
+            PlacesOperation placesOperation = new PlacesOperation(this);
+            placesOperation.execute(input);
+        }
+    }
+
+    private void seleccionarDestinoMapa(View view)
+    {
+        TextView editText = (TextView) view;
+        Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_UBICACION);
+        constrainLayoutPlaces.setVisibility(View.GONE);
+    }
+
+    private void abrirNavegadorPlaces()
+    {
+        Usuario usuario = Usuario.getInstance();
+        if(usuario.getTipoBusqueda() == Usuario.SELECCIONAR_PLACES) {
+            if(!usuario.isBusquedaRealizada()) {
+                constrainLayoutPlaces.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void autoCompletarPlace(String texto,String tag,View v) {
+        Usuario usuario = Usuario.getInstance();
+        if(editTextPartida.isFocused())
+        {
+            editTextPartida.setText(texto);
+            usuario.setPlaceIdOrigen(tag);
+            usuario.setPlaceIdOrigenNombre(texto);
+        }
+        else if(editTextDestino.isFocused())
+        {
+            editTextDestino.setText(texto);
+            usuario.setPlaceIdDestino(tag);
+            usuario.setPlaceIdDestinoNombre(texto);
+        }
+
+    }
+
+    private void dibujarRutaDesdePlaces(View v)
+    {
+        Usuario usuario = Usuario.getInstance();
+        TextView textView = (TextView) v;
+        if(editTextPartida.isFocused())
+        {
+            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdOrigen(),v);
+        }
+        else if(editTextDestino.isFocused())
+        {
+            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdDestino(),v);
+        }
+        constrainLayoutPlaces.setVisibility(View.GONE);
+        ActivityUtils.hideSoftKeyBoard(this);
     }
 
     @Override

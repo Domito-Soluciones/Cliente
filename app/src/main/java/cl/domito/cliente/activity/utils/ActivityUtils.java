@@ -79,12 +79,12 @@ public class ActivityUtils {
                 JSONObject zero = results.getJSONObject(0);
                 addressComponents = zero.getString("formatted_address");
                 String placeId = zero.getString("place_id");
-                if(tipo.equals(Usuario.BUSCAR_PARTIDA))
+                if(tipo.equals(Usuario.BUSCAR_PARTIDA+""))
                 {
                     Usuario.getInstance().setPlaceIdOrigen(placeId);
                     Usuario.getInstance().setPlaceIdOrigenNombre(addressComponents);
                 }
-                else if(tipo.equals(Usuario.BUSCAR_DESTINO))
+                else if(tipo.equals(Usuario.BUSCAR_DESTINO+""))
                 {
                     Usuario.getInstance().setPlaceIdDestino(placeId);
                     Usuario.getInstance().setPlaceIdDestinoNombre(addressComponents);
@@ -158,38 +158,37 @@ public class ActivityUtils {
     public static void dibujarRuta(Activity activity,GoogleMap mMap,String origen,String destino) {
         List<LatLng> path = new ArrayList();
         GeoApiContext context = new GeoApiContext.Builder().apiKey(activity.getString(R.string.api_key)).build();
-        DirectionsApiRequest req = DirectionsApi.getDirections(context, "place_id:"+origen, "place_id:"+destino);
+    DirectionsApiRequest req = DirectionsApi.getDirections(context, "place_id:"+origen, "place_id:"+destino);
         try {
-            DirectionsResult res = req.await();
-            if (res.routes != null && res.routes.length > 0) {
-                DirectionsRoute route = res.routes[0];
+        DirectionsResult res = req.await();
+        if (res.routes != null && res.routes.length > 0) {
+            DirectionsRoute route = res.routes[0];
 
-                if (route.legs !=null) {
-                    for(int i=0; i<route.legs.length; i++) {
-                        DirectionsLeg leg = route.legs[i];
-                        if (leg.steps != null) {
-                            for (int j=0; j<leg.steps.length;j++){
-                                DirectionsStep step = leg.steps[j];
-                                if (step.steps != null && step.steps.length >0) {
-                                    for (int k=0; k<step.steps.length;k++){
-                                        DirectionsStep step1 = step.steps[k];
-                                        EncodedPolyline points1 = step1.polyline;
-                                        if (points1 != null) {
-                                            //Decode polyline and add points to list of route coordinates
-                                            List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
-                                            for (com.google.maps.model.LatLng coord1 : coords1) {
-                                                path.add(new LatLng(coord1.lat, coord1.lng));
-                                            }
+            if (route.legs !=null) {
+                for(int i=0; i<route.legs.length; i++) {
+                    DirectionsLeg leg = route.legs[i];
+                    if (leg.steps != null) {
+                        for (int j=0; j<leg.steps.length;j++){
+                            DirectionsStep step = leg.steps[j];
+                            if (step.steps != null && step.steps.length >0) {
+                                for (int k=0; k<step.steps.length;k++){
+                                    DirectionsStep step1 = step.steps[k];
+                                    EncodedPolyline points1 = step1.polyline;
+                                    if (points1 != null) {
+                                        //Decode polyline and add points to list of route coordinates
+                                        List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
+                                        for (com.google.maps.model.LatLng coord1 : coords1) {
+                                            path.add(new LatLng(coord1.lat, coord1.lng));
                                         }
                                     }
-                                } else {
-                                    EncodedPolyline points = step.polyline;
-                                    if (points != null) {
-                                        //Decode polyline and add points to list of route coordinates
-                                        List<com.google.maps.model.LatLng> coords = points.decodePath();
-                                        for (com.google.maps.model.LatLng coord : coords) {
-                                            path.add(new LatLng(coord.lat, coord.lng));
-                                        }
+                                }
+                            } else {
+                                EncodedPolyline points = step.polyline;
+                                if (points != null) {
+                                    //Decode polyline and add points to list of route coordinates
+                                    List<com.google.maps.model.LatLng> coords = points.decodePath();
+                                    for (com.google.maps.model.LatLng coord : coords) {
+                                        path.add(new LatLng(coord.lat, coord.lng));
                                     }
                                 }
                             }
@@ -197,18 +196,19 @@ public class ActivityUtils {
                     }
                 }
             }
-        } catch(Exception ex) {
-            Log.e("TAG", ex.getLocalizedMessage());
         }
+    } catch(Exception ex) {
+        Log.e("TAG", ex.getLocalizedMessage());
+    }
         if (path.size() > 0) {
-            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(15);
-            mMap.addPolyline(opts);
-        }
+        PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(15);
+        mMap.addPolyline(opts);
+    }
 
-        LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
+    LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
         latLngBounds.include(path.get(0)).include(path.get(path.size()-1));
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
-    }
+}
 
     public static BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
         Drawable background = ContextCompat.getDrawable(context,vectorDrawableResourceId);
