@@ -44,6 +44,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.gson.JsonArray;
 
@@ -51,12 +52,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.thread.AddressOperation;
 import cl.domito.cliente.thread.AgregarServicioOperation;
 import cl.domito.cliente.thread.DatosUsuarioOperation;
 import cl.domito.cliente.dominio.Usuario;
+import cl.domito.cliente.thread.DetalleServicioOperation;
 import cl.domito.cliente.thread.PlacesOperation;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
@@ -380,7 +384,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageViewPoint.setVisibility(View.GONE);
         constraintLayoutToolbar.setVisibility(View.VISIBLE);
         constrainLayoutIngresaViaje.setVisibility(View.GONE);
-        ActivityUtils.dibujarRuta(this,mMap,partida,destino);
+        Usuario.getInstance().setLatLngs(ActivityUtils.dibujarRuta(this,mMap,partida,destino));
         progressBar.setVisibility(View.GONE);
         textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigenNombre());
         textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestinoNombre());
@@ -390,6 +394,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void agregarServicio() {
         AgregarServicioOperation agregarServicioOperation = new AgregarServicioOperation(this);
         agregarServicioOperation.execute();
+        DetalleServicioOperation detalleServicioOperation = new DetalleServicioOperation(this);
+        detalleServicioOperation.execute();
 
     }
 

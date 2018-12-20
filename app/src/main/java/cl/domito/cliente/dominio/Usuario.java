@@ -2,6 +2,8 @@ package cl.domito.cliente.dominio;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 public class Usuario {
 
     private static Usuario instance;
@@ -33,6 +35,7 @@ public class Usuario {
     private int tipoBusqueda;
     private boolean busquedaRealizada;
     private String idViaje;
+    private List<LatLng> latLngs;
 
     public static synchronized Usuario getInstance(){
         if(instance == null){
@@ -200,5 +203,14 @@ public class Usuario {
     public void setIdViaje(String idViaje) {
         this.idViaje = idViaje;
     }
+
+    public List<LatLng> getLatLngs() {
+        return latLngs;
+    }
+
+    public void setLatLngs(List<LatLng> latLngs) {
+        this.latLngs = latLngs;
+    }
+
 
 }

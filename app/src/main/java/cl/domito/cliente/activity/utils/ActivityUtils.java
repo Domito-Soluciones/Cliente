@@ -155,10 +155,10 @@ public class ActivityUtils {
         mNotifyMgr.notify(1, mBuilder.build());
     }
 
-    public static void dibujarRuta(Activity activity,GoogleMap mMap,String origen,String destino) {
+    public static List<LatLng> dibujarRuta(Activity activity,GoogleMap mMap,String origen,String destino) {
         List<LatLng> path = new ArrayList();
         GeoApiContext context = new GeoApiContext.Builder().apiKey(activity.getString(R.string.api_key)).build();
-    DirectionsApiRequest req = DirectionsApi.getDirections(context, "place_id:"+origen, "place_id:"+destino);
+        DirectionsApiRequest req = DirectionsApi.getDirections(context, "place_id:"+origen, "place_id:"+destino);
         try {
         DirectionsResult res = req.await();
         if (res.routes != null && res.routes.length > 0) {
@@ -208,6 +208,8 @@ public class ActivityUtils {
     LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
         latLngBounds.include(path.get(0)).include(path.get(path.size()-1));
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
+
+    return path;
 }
 
     public static BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {

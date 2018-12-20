@@ -25,14 +25,15 @@ import cl.domito.cliente.dominio.Usuario;
 
 public class Utilidades {
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
-    public static String URL_BASE_USUARIO = URL_BASE + "usuario/";
+    public static String URL_BASE_USUARIO = URL_BASE + "pasajero/";
 
     public static JSONObject obtenerJsonObject(String urlDest)
     {
