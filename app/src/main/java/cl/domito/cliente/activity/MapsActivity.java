@@ -85,6 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textViewDetalleDestino;
     private EditText editTextPartida;
     private EditText editTextDestino;
+    private ImageView imageViewMas;
     private ProgressBar progressBar;
     private TextView textViewMapa;
     private TextView textView1;
@@ -119,6 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textViewDetalleDestino = findViewById(R.id.detalleDestinoValor);
         editTextPartida = findViewById(R.id.editTextPartida);
         editTextDestino = findViewById(R.id.editTextDestino);
+        imageViewMas = findViewById(R.id.imageViewMas);
         constraintLayoutToolbar = findViewById(R.id.constrainLayoutToolBar);
         constrainLayoutIngresaViaje = findViewById(R.id.constrainLayoutIngresaViaje);
         constrainLayoutInicioViaje = findViewById(R.id.constrainLayoutInicioViaje);
@@ -183,6 +185,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        imageViewMas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarDestino();
             }
         });
 
@@ -384,7 +393,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageViewPoint.setVisibility(View.GONE);
         constraintLayoutToolbar.setVisibility(View.VISIBLE);
         constrainLayoutIngresaViaje.setVisibility(View.GONE);
-        Usuario.getInstance().setLatLngs(ActivityUtils.dibujarRuta(this,mMap,partida,destino));
+        Usuario.getInstance().setLatLngs(ActivityUtils.getDirections(this,mMap,partida,new String[]{destino}));
         progressBar.setVisibility(View.GONE);
         textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigenNombre());
         textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestinoNombre());
@@ -396,7 +405,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         agregarServicioOperation.execute();
         DetalleServicioOperation detalleServicioOperation = new DetalleServicioOperation(this);
         detalleServicioOperation.execute();
-
     }
 
     private void obtenerPlaces(String input) {
@@ -521,4 +529,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         this.startActivity(intent);
     }
+    private void agregarDestino() {
+        EditText editText = new EditText(this);
+        constrainLayoutIngresaViaje.addView(editText);
+    }
+
 }
+

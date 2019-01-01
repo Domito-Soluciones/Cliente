@@ -39,9 +39,7 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
         Usuario usuario = Usuario.getInstance();
         params.add(new BasicNameValuePair("app", "app"));
         params.add(new BasicNameValuePair("partida", usuario.getPlaceIdOrigenNombre()));
-        params.add(new BasicNameValuePair("partidaId",usuario.getPlaceIdOrigen()));
         params.add(new BasicNameValuePair("destino", usuario.getPlaceIdDestinoNombre()));
-        params.add(new BasicNameValuePair("destinoId", usuario.getPlaceIdDestino()));
         params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
         params.add(new BasicNameValuePair("usuario", usuario.getNick()));
         String idServicio = Utilidades.enviarPost(url,params);

@@ -81,13 +81,11 @@ public class PlacesOperation extends AsyncTask<String, Void, Void> {
                                     }
                                     if(editTextPartida.isFocused())
                                     {
-                                        usuario.setPlaceIdOrigen(placeId);
-                                        usuario.setPlaceIdOrigenNombre(place);
+                                        usuario.setPlaceIdOrigen(place);
                                     }
                                     else
                                     {
-                                        usuario.setPlaceIdDestino(placeId);
-                                        usuario.setPlaceIdDestinoNombre(place);
+                                        usuario.setPlaceIdDestino(place);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();

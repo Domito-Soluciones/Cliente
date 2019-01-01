@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
@@ -58,6 +59,8 @@ public class ActivityUtils {
             "https://maps.googleapis.com/maps/api/geocode/json?";
     public static String URL_PLACES =
             "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+    public static String URL_DIRECTIONS =
+            "https://maps.googleapis.com/maps/api/directions/json?";
 
     public static void hideSoftKeyBoard(Activity activity)
     {
@@ -113,6 +116,53 @@ public class ActivityUtils {
         return results;
     }
 
+    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,String[] destinos)
+    {
+        int largo = destinos.length;
+        String destinoFinal = destinos[largo-1];
+        String waypoints = "";
+        StringBuilder waypointsBuilder = new StringBuilder();
+        List<LatLng> polyline = null;
+        try {
+            if (largo > 1) {
+                waypointsBuilder.append("&waypoints=");
+                for (int i = 0; i < largo; i++) {
+                    if (i == largo) {
+                        continue;
+                    }
+                    waypointsBuilder.append(destinos[i]).append("|");
+                }
+                waypoints = waypointsBuilder.toString().substring(0, waypointsBuilder.toString().length() - 1);
+            }
+            String url = URL_DIRECTIONS + "origin=" + URLEncoder.encode(origen, "utf8") + "&destination=" + URLEncoder.encode(destinoFinal, "utf8") + waypoints + "&key=" + activity.getString(R.string.api_key);
+            JSONObject json = Utilidades.obtenerJsonObject(url);
+            String status = json.getString("status");
+            if(status.equals("OK"))
+            {
+                JSONArray array =json.getJSONArray("routes");
+                JSONObject object = (JSONObject) array.get(0);
+                String points = object.getJSONObject("overview_polyline").getString("points");
+                polyline = decodePolyline(points);
+                PolylineOptions polylineOptions = new PolylineOptions().width(5).color(Color.RED);
+                polylineOptions.addAll(polyline);
+                Polyline line = mMap.addPolyline(polylineOptions);
+            }
+            else if(status.equals("NOT_FOUND"))
+            {
+                Toast.makeText(activity.getApplicationContext(),"Ruta no encontrada",Toast.LENGTH_LONG);
+            }
+            LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
+            latLngBounds.include(polyline.get(0)).include(polyline.get(polyline.size()-1));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return polyline;
+    }
+
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
         if (loc != null) {
             Usuario.getInstance().setLatitud(loc.getLatitude());
@@ -155,63 +205,6 @@ public class ActivityUtils {
         mNotifyMgr.notify(1, mBuilder.build());
     }
 
-    public static List<LatLng> dibujarRuta(Activity activity,GoogleMap mMap,String origen,String destino) {
-        List<LatLng> path = new ArrayList();
-        GeoApiContext context = new GeoApiContext.Builder().apiKey(activity.getString(R.string.api_key)).build();
-        DirectionsApiRequest req = DirectionsApi.getDirections(context, "place_id:"+origen, "place_id:"+destino);
-        try {
-        DirectionsResult res = req.await();
-        if (res.routes != null && res.routes.length > 0) {
-            DirectionsRoute route = res.routes[0];
-
-            if (route.legs !=null) {
-                for(int i=0; i<route.legs.length; i++) {
-                    DirectionsLeg leg = route.legs[i];
-                    if (leg.steps != null) {
-                        for (int j=0; j<leg.steps.length;j++){
-                            DirectionsStep step = leg.steps[j];
-                            if (step.steps != null && step.steps.length >0) {
-                                for (int k=0; k<step.steps.length;k++){
-                                    DirectionsStep step1 = step.steps[k];
-                                    EncodedPolyline points1 = step1.polyline;
-                                    if (points1 != null) {
-                                        //Decode polyline and add points to list of route coordinates
-                                        List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
-                                        for (com.google.maps.model.LatLng coord1 : coords1) {
-                                            path.add(new LatLng(coord1.lat, coord1.lng));
-                                        }
-                                    }
-                                }
-                            } else {
-                                EncodedPolyline points = step.polyline;
-                                if (points != null) {
-                                    //Decode polyline and add points to list of route coordinates
-                                    List<com.google.maps.model.LatLng> coords = points.decodePath();
-                                    for (com.google.maps.model.LatLng coord : coords) {
-                                        path.add(new LatLng(coord.lat, coord.lng));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    } catch(Exception ex) {
-        Log.e("TAG", ex.getLocalizedMessage());
-    }
-        if (path.size() > 0) {
-        PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(15);
-        mMap.addPolyline(opts);
-    }
-
-    LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
-        latLngBounds.include(path.get(0)).include(path.get(path.size()-1));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
-
-    return path;
-}
-
     public static BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
         Drawable background = ContextCompat.getDrawable(context,vectorDrawableResourceId);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
@@ -252,4 +245,39 @@ public class ActivityUtils {
         };
         return runnable;
     }
+    public static List<LatLng> decodePolyline(final String encodedPath) {
+
+        int len = encodedPath.length();
+
+        final List<LatLng> path = new ArrayList<>(len / 2);
+        int index = 0;
+        int lat = 0;
+        int lng = 0;
+
+        while (index < len) {
+            int result = 1;
+            int shift = 0;
+            int b;
+            do {
+                b = encodedPath.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lat += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+            result = 1;
+            shift = 0;
+            do {
+                b = encodedPath.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+            path.add(new LatLng(lat * 1e-5, lng * 1e-5));
+        }
+
+        return path;
+    }
+
 }
