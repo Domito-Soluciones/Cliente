@@ -61,6 +61,7 @@ import cl.domito.cliente.thread.AgregarServicioOperation;
 import cl.domito.cliente.thread.DatosUsuarioOperation;
 import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.thread.DetalleServicioOperation;
+import cl.domito.cliente.thread.DirectionsOperation;
 import cl.domito.cliente.thread.PlacesOperation;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
@@ -384,20 +385,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void solicitarViaje() {
-        progressBar.setVisibility(View.VISIBLE);
-        Usuario.getInstance().setBuscaServicio(false);
-        Usuario.getInstance().setBusquedaRealizada(true);
-        buttonSolicitar.setVisibility(View.GONE);
-        String partida = Usuario.getInstance().getPlaceIdOrigen();
-        String destino = Usuario.getInstance().getPlaceIdDestino();
-        imageViewPoint.setVisibility(View.GONE);
-        constraintLayoutToolbar.setVisibility(View.VISIBLE);
-        constrainLayoutIngresaViaje.setVisibility(View.GONE);
-        Usuario.getInstance().setLatLngs(ActivityUtils.getDirections(this,mMap,partida,new String[]{destino}));
-        progressBar.setVisibility(View.GONE);
-        textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigenNombre());
-        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestinoNombre());
-        constrainLayoutConfirmarViaje.setVisibility(View.VISIBLE);
+        String partida = Usuario.getInstance().getPlaceIdOrigenNombre();
+        String destino = Usuario.getInstance().getPlaceIdDestinoNombre();
+        DirectionsOperation directionsOperation = new DirectionsOperation(this);
+        directionsOperation.execute(mMap,partida,new String[]{destino});
     }
 
     private void agregarServicio() {

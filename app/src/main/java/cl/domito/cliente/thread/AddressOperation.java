@@ -44,7 +44,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
                 editTextACompletar.setText(cargando);
             }
         });
-        String address = ActivityUtils.getAddress(context.get(),strings[0],strings[1],tipo);
+        String address = ActivityUtils.getGeocoder(context.get(),strings[0],strings[1],tipo);
         context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
         return address;
     }

@@ -71,7 +71,7 @@ public class ActivityUtils {
         }
     }
 
-    public static String getAddress(Activity activity,String latitud,String longitud,String tipo) {
+    public static String getGeocoder(Activity activity,String latitud,String longitud,String tipo) {
         String addressComponents = "";
         try {
             String url = URL_GEOCODER + "latlng="+latitud+","+longitud+"&sensor=true&key="+activity.getString(R.string.api_key);
@@ -143,17 +143,32 @@ public class ActivityUtils {
                 JSONObject object = (JSONObject) array.get(0);
                 String points = object.getJSONObject("overview_polyline").getString("points");
                 polyline = decodePolyline(points);
-                PolylineOptions polylineOptions = new PolylineOptions().width(5).color(Color.RED);
+                PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.BLACK);
                 polylineOptions.addAll(polyline);
-                Polyline line = mMap.addPolyline(polylineOptions);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Polyline line = mMap.addPolyline(polylineOptions);
+                    }
+                });
             }
             else if(status.equals("NOT_FOUND"))
             {
-                Toast.makeText(activity.getApplicationContext(),"Ruta no encontrada",Toast.LENGTH_LONG);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity.getApplicationContext(),"Ruta no encontrada",Toast.LENGTH_LONG);
+                    }
+                });
             }
             LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
             latLngBounds.include(polyline.get(0)).include(polyline.get(polyline.size()-1));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
+                }
+            });
 
         }
         catch(Exception e)
