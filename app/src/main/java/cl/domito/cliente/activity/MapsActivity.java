@@ -507,6 +507,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         this.startActivity(intent);
     }
+
     private void agregarDestino() {
         EditText editText = new EditText(this);
         constrainLayoutIngresaViaje.addView(editText);

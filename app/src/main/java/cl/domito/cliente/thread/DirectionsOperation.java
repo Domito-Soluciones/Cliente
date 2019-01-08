@@ -48,15 +48,15 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-                Usuario.getInstance().setBuscaServicio(false);
-                Usuario.getInstance().setBusquedaRealizada(true);
-                buttonSolicitar.setVisibility(View.GONE);
-                imageViewPoint.setVisibility(View.GONE);
-                constraintLayoutToolbar.setVisibility(View.VISIBLE);
-                constrainLayoutIngresaViaje.setVisibility(View.GONE);
-            }
-        });
+        progressBar.setVisibility(View.VISIBLE);
+        Usuario.getInstance().setBuscaServicio(false);
+        Usuario.getInstance().setBusquedaRealizada(true);
+        buttonSolicitar.setVisibility(View.GONE);
+        imageViewPoint.setVisibility(View.GONE);
+        constraintLayoutToolbar.setVisibility(View.VISIBLE);
+        constrainLayoutIngresaViaje.setVisibility(View.GONE);
+    }
+});
         GoogleMap mMap = (GoogleMap) objects[0];
         String partida = (String) objects[1];
         String[] destinos = (String[]) objects[2];
