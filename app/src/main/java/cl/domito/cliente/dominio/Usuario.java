@@ -1,5 +1,7 @@
 package cl.domito.cliente.dominio;
 
+import android.view.View;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -7,9 +9,6 @@ import java.util.List;
 public class Usuario {
 
     private static Usuario instance;
-
-    public static int BUSCAR_PARTIDA = 0;
-    public static int BUSCAR_DESTINO = 1;
 
     public static int SELECCIONAR_UBICACION = 0;
     public static int SELECCIONAR_PLACES = 1;
@@ -28,14 +27,14 @@ public class Usuario {
     private double longitud;
     private boolean buscaServicio;
     private String placeIdOrigen;
-    private String placeIdOrigenNombre;
-    private String placeIdDestino;
-    private String placeIdDestinoNombre;
+    private String[] placeIdDestino = new String[4];
     private boolean conectado;
     private int tipoBusqueda;
     private boolean busquedaRealizada;
     private String idViaje;
     private List<LatLng> latLngs;
+    private int cantidadDestinos = 1;
+    private View editTextCompletar;
 
     public static synchronized Usuario getInstance(){
         if(instance == null){
@@ -148,28 +147,12 @@ public class Usuario {
         this.placeIdOrigen = placeIdOrigen;
     }
 
-    public String getPlaceIdOrigenNombre() {
-        return placeIdOrigenNombre;
-    }
-
-    public void setPlaceIdOrigenNombre(String placeIdOrigenNombre) {
-        this.placeIdOrigenNombre = placeIdOrigenNombre;
-    }
-
-    public String getPlaceIdDestino() {
+    public String[] getPlaceIdDestino() {
         return placeIdDestino;
     }
 
-    public void setPlaceIdDestino(String placeIdDestino) {
+    public void setPlaceIdDestino(String[] placeIdDestino) {
         this.placeIdDestino = placeIdDestino;
-    }
-
-    public String getPlaceIdDestinoNombre() {
-        return placeIdDestinoNombre;
-    }
-
-    public void setPlaceIdDestinoNombre(String placeIdDestinoNombre) {
-        this.placeIdDestinoNombre = placeIdDestinoNombre;
     }
 
     public boolean isConectado() {
@@ -212,5 +195,20 @@ public class Usuario {
         this.latLngs = latLngs;
     }
 
+    public int getCantidadDestinos() {
+        return cantidadDestinos;
+    }
+
+    public void setCantidadDestinos(int cantidadDestinos) {
+        this.cantidadDestinos = cantidadDestinos;
+    }
+
+    public View getEditTextCompletar() {
+        return editTextCompletar;
+    }
+
+    public void setEditTextCompletar(View editTextCompletar) {
+        this.editTextCompletar = editTextCompletar;
+    }
 
 }

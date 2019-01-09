@@ -64,7 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textViewInicio;
     private ImageView imageViewPoint;
     private ConstraintLayout constraintLayoutToolbar;
-    private ConstraintLayout constrainLayoutIngresaViaje;
+    private ConstraintLayout constraintLayoutIngresaViaje;
     private ConstraintLayout constrainLayoutInicioViaje;
     private ConstraintLayout constrainLayoutConfirmarViaje;
     private ConstraintLayout constrainLayoutPlaces;
@@ -74,7 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textViewDetalleDestino;
     private EditText editTextPartida;
     private EditText editTextDestino;
+    private EditText editTextDestino2;
+    private EditText editTextDestino3;
+    private EditText editTextDestino4;
     private ImageView imageViewMas;
+    private ImageView imageViewMenos;
     private ProgressBar progressBar;
     private TextView textViewMapa;
     private TextView textView1;
@@ -109,9 +113,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textViewDetalleDestino = findViewById(R.id.detalleDestinoValor);
         editTextPartida = findViewById(R.id.editTextPartida);
         editTextDestino = findViewById(R.id.editTextDestino);
+        editTextDestino2 = findViewById(R.id.editTextDestino2);
+        editTextDestino3 = findViewById(R.id.editTextDestino3);
+        editTextDestino4 = findViewById(R.id.editTextDestino4);
         imageViewMas = findViewById(R.id.imageViewMas);
+        imageViewMenos = findViewById(R.id.imageViewMenos);
         constraintLayoutToolbar = findViewById(R.id.constrainLayoutToolBar);
-        constrainLayoutIngresaViaje = findViewById(R.id.constrainLayoutIngresaViaje);
+        constraintLayoutIngresaViaje = findViewById(R.id.constrainLayoutIngresaViaje);
         constrainLayoutInicioViaje = findViewById(R.id.constrainLayoutInicioViaje);
         constrainLayoutConfirmarViaje = findViewById(R.id.constrainLayoutConfirmarViaje);
         constrainLayoutPlaces = findViewById(R.id.constrainLayoutPlaces);
@@ -130,6 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void onClick(View v) {
                     Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                    Usuario.getInstance().setEditTextCompletar(v);
                     editTextPartida.clearFocus();
                     editTextPartida.requestFocus();
                 }
@@ -138,6 +147,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
             public void onClick(View v) {
                 Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                Usuario.getInstance().setEditTextCompletar(v);
+                editTextDestino.clearFocus();
+                editTextDestino.requestFocus();
+            }
+        });
+
+        editTextDestino2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                Usuario.getInstance().setEditTextCompletar(v);
+                editTextDestino.clearFocus();
+                editTextDestino.requestFocus();
+            }
+        });
+
+        editTextDestino3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                Usuario.getInstance().setEditTextCompletar(v);
+                editTextDestino.clearFocus();
+                editTextDestino.requestFocus();
+            }
+        });
+
+        editTextDestino4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                Usuario.getInstance().setEditTextCompletar(v);
                 editTextDestino.clearFocus();
                 editTextDestino.requestFocus();
             }
@@ -177,10 +217,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        editTextDestino2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                abrirNavegadorPlaces();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                obtenerPlaces(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editTextDestino3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                abrirNavegadorPlaces();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                obtenerPlaces(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editTextDestino4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                abrirNavegadorPlaces();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                obtenerPlaces(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         imageViewMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 agregarDestino();
+            }
+        });
+
+        imageViewMenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quitarDestino();
             }
         });
 
@@ -288,25 +386,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void abrirBuscadorServicios()
-    {
-        Usuario.getInstance().setBuscaServicio(true);
-        constraintLayoutToolbar.setVisibility(View.GONE);
-        constrainLayoutIngresaViaje.setVisibility(View.VISIBLE);
-        constrainLayoutInicioViaje.setVisibility(View.GONE);
-        imageViewPoint.setVisibility(View.VISIBLE);
-        Usuario usuario = Usuario.getInstance();
-        AddressOperation addressOperation = new AddressOperation(this);
-        addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "",Usuario.BUSCAR_PARTIDA+"");
-    }
+{
+    Usuario.getInstance().setBuscaServicio(true);
+    constraintLayoutToolbar.setVisibility(View.GONE);
+    constraintLayoutIngresaViaje.setVisibility(View.VISIBLE);
+    constraintLayoutIngresaViaje.bringToFront();
+    constrainLayoutInicioViaje.setVisibility(View.GONE);
+    imageViewPoint.setVisibility(View.VISIBLE);
+    Usuario usuario = Usuario.getInstance();
+    AddressOperation addressOperation = new AddressOperation(this);
+    addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "");
+}
 
     private void volver()
     {
         Usuario.getInstance().setBuscaServicio(false);
         constraintLayoutToolbar.setVisibility(View.VISIBLE);
-        constrainLayoutIngresaViaje.setVisibility(View.GONE);
+        constraintLayoutIngresaViaje.setVisibility(View.GONE);
         constrainLayoutPlaces.setVisibility(View.GONE);
         constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
         imageViewPoint.setVisibility(View.GONE);
+        editTextDestino2.setVisibility(View.INVISIBLE);
+        editTextDestino3.setVisibility(View.INVISIBLE);
+        editTextDestino4.setVisibility(View.INVISIBLE);
+        ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) constraintLayoutIngresaViaje.getLayoutParams();
+        newLayoutParams.height = ActivityUtils.dpToPx(120,this);
+        constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
     }
 
     private boolean getMenuContextual(MenuItem menuItem) {
@@ -363,20 +468,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             AddressOperation addressOperation = new AddressOperation(this);
             if(editTextPartida.isFocused())
             {
-                addressOperation.execute(latitud,longitud,Usuario.BUSCAR_PARTIDA+"");
+                addressOperation.execute(latitud,longitud);
             }
             else
             {
-                addressOperation.execute(latitud,longitud,Usuario.BUSCAR_DESTINO+"");
+                addressOperation.execute(latitud,longitud);
             }
         }
     }
 
     private void solicitarViaje() {
-        String partida = Usuario.getInstance().getPlaceIdOrigenNombre();
-        String destino = Usuario.getInstance().getPlaceIdDestinoNombre();
+        String partida = Usuario.getInstance().getPlaceIdOrigen();
+        String[] destinos = Usuario.getInstance().getPlaceIdDestino();
         DirectionsOperation directionsOperation = new DirectionsOperation(this);
-        directionsOperation.execute(mMap,partida,new String[]{destino});
+        directionsOperation.execute(mMap,partida,destinos);
     }
 
     private void agregarServicio() {
@@ -416,14 +521,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(editTextPartida.isFocused())
         {
             editTextPartida.setText(texto);
-            usuario.setPlaceIdOrigen(tag);
-            usuario.setPlaceIdOrigenNombre(texto);
+            usuario.setPlaceIdOrigen(texto);
         }
-        else if(editTextDestino.isFocused())
+        else
         {
             editTextDestino.setText(texto);
-            usuario.setPlaceIdDestino(tag);
-            usuario.setPlaceIdDestinoNombre(texto);
+           // usuario.setPlaceIdDestino(texto);
         }
 
     }
@@ -438,7 +541,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else if(editTextDestino.isFocused())
         {
-            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdDestino(),v);
+            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdDestino()[usuario.getCantidadDestinos()-1],v);
         }
         constrainLayoutPlaces.setVisibility(View.GONE);
         ActivityUtils.hideSoftKeyBoard(this);
@@ -508,14 +611,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         this.startActivity(intent);
     }
+
     private void agregarDestino() {
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayoutToolbar);
+        Usuario usuario = Usuario.getInstance();
+        usuario.setCantidadDestinos(usuario.getCantidadDestinos()+1);
+        ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) constraintLayoutIngresaViaje.getLayoutParams();
+        if(usuario.getCantidadDestinos() == 2)
+        {
+            editTextDestino2.setVisibility(View.VISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(160,this);
+        }
+        else if(usuario.getCantidadDestinos() == 3)
+        {
+            editTextDestino3.setVisibility(View.VISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(200,this);
+        }
+        else if(usuario.getCantidadDestinos() == 4)
+        {
+            editTextDestino4.setVisibility(View.VISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(250,this);
+        }
+        constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
 
-        constraintSet.connect(contactUs.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 18);
-        constraintSet.connect(contactUs.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT, 18);
+    }
 
-        constraintSet.applyTo(constraintLayout);
+    private void quitarDestino() {
+        Usuario usuario = Usuario.getInstance();
+        usuario.setCantidadDestinos(usuario.getCantidadDestinos()-1);
+        ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) constraintLayoutIngresaViaje.getLayoutParams();
+        if(usuario.getCantidadDestinos() == 4)
+        {
+            editTextDestino2.setVisibility(View.INVISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(200,this);
+        }
+        else if(usuario.getCantidadDestinos() == 3)
+        {
+            editTextDestino3.setVisibility(View.INVISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(160,this);
+        }
+        else if(usuario.getCantidadDestinos() == 2)
+        {
+            editTextDestino4.setVisibility(View.INVISIBLE);
+            newLayoutParams.height = ActivityUtils.dpToPx(120,this);
+        }
+        constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
 
     }
 
