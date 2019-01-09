@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -508,8 +509,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.startActivity(intent);
     }
     private void agregarDestino() {
-        EditText editText = new EditText(this);
-        constrainLayoutIngresaViaje.addView(editText);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayoutToolbar);
+
+        constraintSet.connect(contactUs.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, 18);
+        constraintSet.connect(contactUs.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT, 18);
+
+        constraintSet.applyTo(constraintLayout);
+
     }
 
 }
