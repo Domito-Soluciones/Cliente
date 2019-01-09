@@ -79,14 +79,14 @@ public class PlacesOperation extends AsyncTask<String, Void, Void> {
                                             textView4.setText(place);
                                             break;
                                     }
-                                    if(editTextPartida.isFocused())
+                                    /*if(editTextPartida.isFocused())
                                     {
                                         usuario.setPlaceIdOrigen(place);
                                     }
                                     else
                                     {
                                         usuario.setPlaceIdDestino(place);
-                                    }
+                                    }*/
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

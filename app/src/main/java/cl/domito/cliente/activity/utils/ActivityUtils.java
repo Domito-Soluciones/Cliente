@@ -71,7 +71,7 @@ public class ActivityUtils {
         }
     }
 
-    public static String getGeocoder(Activity activity,String latitud,String longitud,String tipo) {
+    public static String getGeocoder(Activity activity,String latitud,String longitud) {
         String addressComponents = "";
         try {
             String url = URL_GEOCODER + "latlng="+latitud+","+longitud+"&sensor=true&key="+activity.getString(R.string.api_key);
@@ -81,17 +81,6 @@ public class ActivityUtils {
                 JSONArray results = json.getJSONArray("results");
                 JSONObject zero = results.getJSONObject(0);
                 addressComponents = zero.getString("formatted_address");
-                String placeId = zero.getString("place_id");
-                if(tipo.equals(Usuario.BUSCAR_PARTIDA+""))
-                {
-                    Usuario.getInstance().setPlaceIdOrigen(placeId);
-                    Usuario.getInstance().setPlaceIdOrigenNombre(addressComponents);
-                }
-                else if(tipo.equals(Usuario.BUSCAR_DESTINO+""))
-                {
-                    Usuario.getInstance().setPlaceIdDestino(placeId);
-                    Usuario.getInstance().setPlaceIdDestinoNombre(addressComponents);
-                }
             }
 
         } catch (Exception e) {
@@ -294,5 +283,13 @@ public class ActivityUtils {
 
         return path;
     }
+
+    public static int dpToPx(int dp,Context context) {
+        float density = context.getResources()
+                .getDisplayMetrics()
+                .density;
+        return Math.round((float) dp * density);
+    }
+
 
 }

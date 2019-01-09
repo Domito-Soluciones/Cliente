@@ -72,8 +72,20 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
                 @Override
                 public void run() {
                     progressBar.setVisibility(View.GONE);
-                    textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigenNombre());
-                    textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestinoNombre());
+                    textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigen());
+                    Usuario usuario = Usuario.getInstance();
+                    if(usuario.getCantidadDestinos() == 1) {
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[0]);
+                    }
+                    else if(usuario.getCantidadDestinos() == 2) {
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[1]);
+                    }
+                    if(usuario.getCantidadDestinos() == 3) {
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[2]);
+                    }
+                    if(usuario.getCantidadDestinos() == 4) {
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[3]);
+                    }
                     constrainLayoutConfirmarViaje.setVisibility(View.VISIBLE);
                 }
             }
