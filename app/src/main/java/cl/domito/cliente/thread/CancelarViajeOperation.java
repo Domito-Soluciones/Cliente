@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,8 @@ public class CancelarViajeOperation extends AsyncTask<String, Void, Void> {
         Usuario usuario = Usuario.getInstance();
         params.add(new BasicNameValuePair("app", "app"));
         params.add(new BasicNameValuePair("id",usuario.getIdViaje()));
-        String idServicio = Utilidades.enviarPost(url,params);
-        if(idServicio != null)
+        JSONObject servicio = Utilidades.enviarPost(url,params);
+        if(servicio != null)
         {
             usuario.setIdViaje(null);
             usuario.setBusquedaRealizada(false);

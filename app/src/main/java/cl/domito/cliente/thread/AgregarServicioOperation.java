@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -42,8 +43,14 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
         params.add(new BasicNameValuePair("destino", usuario.getPlaceIdDestino()[usuario.getCantidadDestinos()-1]));
         params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
         params.add(new BasicNameValuePair("usuario", usuario.getNick()));
-        String idServicio = Utilidades.enviarPost(url,params);
-        usuario.setIdViaje(idServicio);
+        JSONObject servicio = Utilidades.enviarPost(url,params);
+        try {
+            usuario.setIdViaje(servicio.getString("servicio_id"));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
         return null;
     }

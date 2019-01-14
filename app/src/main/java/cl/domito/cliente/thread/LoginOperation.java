@@ -45,22 +45,25 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
         });
-        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO +
-                "LoginUsuario.php?usuario=" + strings[0] + "&password=" + strings[1]);
+        List<NameValuePair> params = new ArrayList();
+        params.add(new BasicNameValuePair("usuario",strings[0]));
+        params.add(new BasicNameValuePair("password",strings[1]));
+        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "LoginPasajero.php",params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             usuario.setActivo(true);
             usuario.setNick(strings[0]);
             if(usuario.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
-                        (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
+                (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
                 ActivityUtils.guardarSharedPreferences(pref,loginActivity.getString(
-                        R.string.sharedPreferenceKeyUser),usuario.getId());
+                        R.string.sharedPreferenceKeyUser),usuario.getNick());
             }
-            String url = Utilidades.URL_BASE_USUARIO + "HabilitarUsuario.php";
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("usuario", usuario.getId()));
-            Utilidades.enviarPost(url,params);
+            String url = Utilidades.URL_BASE_USUARIO + "ModEstadoPasajero.php";
+            List<NameValuePair> params2 = new ArrayList<NameValuePair>();
+            params2.add(new BasicNameValuePair("usuario", usuario.getNick()));
+            params2.add(new BasicNameValuePair("estado", Usuario.CONECTADO+""));
+            Utilidades.enviarPost(url,params2);
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();

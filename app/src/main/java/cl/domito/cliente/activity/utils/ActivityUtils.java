@@ -75,7 +75,7 @@ public class ActivityUtils {
         String addressComponents = "";
         try {
             String url = URL_GEOCODER + "latlng="+latitud+","+longitud+"&sensor=true&key="+activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
+            JSONObject json = Utilidades.enviarPost(url,null);
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray results = json.getJSONArray("results");
@@ -93,7 +93,7 @@ public class ActivityUtils {
         JSONArray results = null;
         try {
             String url = URL_PLACES + "input="+URLEncoder.encode(input, "utf8")+"&location="+latitud+","+longitud+"&sensor=true&radius=1000&key="+activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
+            JSONObject json = Utilidades.enviarPost(url,null);
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {
                 results = json.getJSONArray("predictions");
@@ -124,7 +124,7 @@ public class ActivityUtils {
                 waypoints = waypointsBuilder.toString().substring(0, waypointsBuilder.toString().length() - 1);
             }
             String url = URL_DIRECTIONS + "origin=" + URLEncoder.encode(origen, "utf8") + "&destination=" + URLEncoder.encode(destinoFinal, "utf8") + waypoints + "&key=" + activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
+            JSONObject json = Utilidades.enviarPost(url,null);
             String status = json.getString("status");
             if(status.equals("OK"))
             {

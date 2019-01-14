@@ -17,11 +17,11 @@ public class RequestUsuario {
     private static List<NameValuePair> PARAMS = new ArrayList<NameValuePair>();
 
 
-    public static boolean loginUsuario(String reqUrl)
+    public static boolean loginUsuario(String reqUrl,List<NameValuePair> params)
     {
         try {
             if(Usuario.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
                 if (!RESPUESTA.getString("id").equals("0")) {
                     return true;
                 }
@@ -33,10 +33,10 @@ public class RequestUsuario {
         }
         return false;
     }
-    public static JSONObject datosUsuario(String reqUrl) throws JSONException {
+    public static JSONObject datosUsuario(String reqUrl,List<NameValuePair> params) throws JSONException {
         try {
             if(Usuario.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
             }
         }
         catch(Exception e)

@@ -14,6 +14,9 @@ public class Usuario {
     public static int SELECCIONAR_PLACES = 1;
     public static int SELECCIONAR_MAPA = 2;
 
+    public static int DESCONECTADO = 0;
+    public static int CONECTADO = 1;
+
     private String id;
     private String nombre;
     private String nick;
@@ -21,6 +24,7 @@ public class Usuario {
     private String cliente;
     private String celular;
     private String direccion;
+    private String mail;
     private boolean activo;
     private boolean recordarSession;
     private double latitud;
@@ -97,6 +101,14 @@ public class Usuario {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getMail() {
+        return mail;
+}
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public boolean isActivo() {
