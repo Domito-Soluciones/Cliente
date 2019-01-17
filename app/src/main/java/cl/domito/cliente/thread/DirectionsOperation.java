@@ -59,7 +59,7 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
 });
         GoogleMap mMap = (GoogleMap) objects[0];
         String partida = (String) objects[1];
-        String[] destinos = (String[]) objects[2];
+        List<String> destinos = (List) objects[2];
         List<LatLng> latLngs = ActivityUtils.getDirections(context.get(),mMap,partida,destinos);
         Usuario.getInstance().setLatLngs(latLngs);
         return null;
@@ -75,16 +75,16 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
                     textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigen());
                     Usuario usuario = Usuario.getInstance();
                     if(usuario.getCantidadDestinos() == 1) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[0]);
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(0));
                     }
                     else if(usuario.getCantidadDestinos() == 2) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[1]);
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(1));
                     }
                     if(usuario.getCantidadDestinos() == 3) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[2]);
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(2));
                     }
                     if(usuario.getCantidadDestinos() == 4) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino()[3]);
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(3));
                     }
                     constrainLayoutConfirmarViaje.setVisibility(View.VISIBLE);
                 }

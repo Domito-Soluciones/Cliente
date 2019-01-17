@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="top"
     android:background="@android:color/transparent"
-    tools:context="cl.domito.cliente.activity.ServicioActivity">
+    tools:context="cl.domito.cliente.activity.SolicitarActivity">
 
     <TextView
         android:id="@+id/textView"

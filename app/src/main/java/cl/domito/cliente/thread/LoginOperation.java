@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,8 +14,10 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import cl.domito.cliente.R;
@@ -33,6 +37,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         context = new WeakReference<LoginActivity>(activity);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected Void doInBackground(String... strings) {
         Usuario usuario = Usuario.getInstance();
@@ -47,8 +52,15 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         });
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("usuario",strings[0]));
-        params.add(new BasicNameValuePair("password",strings[1]));
-        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "LoginPasajero.php",params);
+        String password = null;
+        try {
+            byte[] data = strings[1].getBytes("UTF-8");
+            String base64 = android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
+            params.add(new BasicNameValuePair("password",base64));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "Login.php",params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             usuario.setActivo(true);

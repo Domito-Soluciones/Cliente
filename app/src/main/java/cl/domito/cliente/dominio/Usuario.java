@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
@@ -31,7 +32,7 @@ public class Usuario {
     private double longitud;
     private boolean buscaServicio;
     private String placeIdOrigen;
-    private String[] placeIdDestino = new String[4];
+    private List<String> placeIdDestino = new ArrayList();
     private boolean conectado;
     private int tipoBusqueda;
     private boolean busquedaRealizada;
@@ -159,11 +160,11 @@ public class Usuario {
         this.placeIdOrigen = placeIdOrigen;
     }
 
-    public String[] getPlaceIdDestino() {
+    public List<String> getPlaceIdDestino() {
         return placeIdDestino;
     }
 
-    public void setPlaceIdDestino(String[] placeIdDestino) {
+    public void setPlaceIdDestino(List<String> placeIdDestino) {
         this.placeIdDestino = placeIdDestino;
     }
 

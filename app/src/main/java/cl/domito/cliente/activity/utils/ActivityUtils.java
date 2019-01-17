@@ -105,10 +105,10 @@ public class ActivityUtils {
         return results;
     }
 
-    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,String[] destinos)
+    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,List<String> destinos)
     {
-        int largo = destinos.length;
-        String destinoFinal = destinos[largo-1];
+        int largo = destinos.size();
+        String destinoFinal = destinos.get( destinos.size()-1 );
         String waypoints = "";
         StringBuilder waypointsBuilder = new StringBuilder();
         List<LatLng> polyline = null;
@@ -119,7 +119,7 @@ public class ActivityUtils {
                     if (i == largo) {
                         continue;
                     }
-                    waypointsBuilder.append(destinos[i]).append("|");
+                    waypointsBuilder.append(destinos.get(i)).append("|");
                 }
                 waypoints = waypointsBuilder.toString().substring(0, waypointsBuilder.toString().length() - 1);
             }
