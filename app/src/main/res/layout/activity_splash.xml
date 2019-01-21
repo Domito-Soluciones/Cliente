@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/whitesmoke"
     tools:context="cl.domito.cliente.activity.SplashScreenActivity"
     android:id="@+id/relativeLayout2">
 

@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,14 +20,15 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.cliente.dominio.Usuario;
 
 public class Utilidades {
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
-    //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
@@ -35,47 +37,23 @@ public class Utilidades {
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
     public static String URL_BASE_USUARIO = URL_BASE + "pasajero/";
 
-    public static JSONObject obtenerJsonObject(String urlDest)
-    {
-        InputStream is = null;
-        String result = "";
-        JSONObject jObject = null;
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(urlDest);
-            httppost.addHeader("Referer", "app-cliente");
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            is.close();
-            result = sb.toString();
-            jObject = new JSONObject(result);
-            Usuario.getInstance().setConectado(true);
-        }
-        catch (UnknownHostException ue)
-        {
-            Usuario.getInstance().setConectado(false);
-        }
-        catch (Exception e) {
-            Log.e("log_tag", "Error parsing data " + e.toString());
-        }
 
-        return jObject;
-    }
-    public static String enviarPost(String urlDest,List<NameValuePair> params) {
-        StringBuffer result = new StringBuffer();
+    public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) {
+        JSONObject jsonObject = null;
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");
         post.addHeader("Referer", "app-cliente");
         try {
-            post.setEntity(new UrlEncodedFormEntity(params));
+            if(params != null) {
+                params.add(new BasicNameValuePair("app","app"));
+                post.setEntity(new UrlEncodedFormEntity(params));
+            }
+            else
+            {
+                params = new ArrayList();
+                params.add(new BasicNameValuePair("app","app"));
+            }
             HttpResponse response = client.execute(post);
             System.out.println("Response Code : "
                     + response.getStatusLine().getStatusCode());
@@ -83,10 +61,12 @@ public class Utilidades {
                     new InputStreamReader(response.getEntity().getContent()));
 
             String line = "";
+            StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
             System.out.println(result.toString());
+            jsonObject = new JSONObject(result.toString());
             Usuario.getInstance().setConectado(true);
         }
         catch (UnknownHostException e)
@@ -96,7 +76,7 @@ public class Utilidades {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return  result.toString();
+        return  jsonObject;
     }
 
 

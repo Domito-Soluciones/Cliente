@@ -45,9 +45,6 @@ public class LoginActivity extends AppCompatActivity {
                 recordarInicioSesion();
             }
         });
-
-        Intent i = new Intent(this, SolicitarViajeService.class);
-        startService(i);
     }
 
     private void recordarInicioSesion() {

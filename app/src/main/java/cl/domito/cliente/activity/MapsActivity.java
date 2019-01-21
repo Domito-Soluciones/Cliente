@@ -42,6 +42,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import java.util.List;
+
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.thread.AddressOperation;
@@ -479,7 +481,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void solicitarViaje() {
         String partida = Usuario.getInstance().getPlaceIdOrigen();
-        String[] destinos = Usuario.getInstance().getPlaceIdDestino();
+        List<String> destinos = Usuario.getInstance().getPlaceIdDestino();
         DirectionsOperation directionsOperation = new DirectionsOperation(this);
         directionsOperation.execute(mMap,partida,destinos);
     }
@@ -541,7 +543,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else if(editTextDestino.isFocused())
         {
-            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdDestino()[usuario.getCantidadDestinos()-1],v);
+            autoCompletarPlace(textView.getText().toString(),usuario.getPlaceIdDestino().get(usuario.getCantidadDestinos()-1),v);
         }
         constrainLayoutPlaces.setVisibility(View.GONE);
         ActivityUtils.hideSoftKeyBoard(this);

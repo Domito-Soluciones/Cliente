@@ -66,7 +66,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
                 else if(editTextACompletar.getId() == R.id.editTextDestino)
                 {
                     botonIniciar.setVisibility(View.VISIBLE);
-                    usuario.getPlaceIdDestino()[0] = s;
+                    usuario.getPlaceIdDestino().add(s);
                     editTextDestino2 = context.get().findViewById(R.id.editTextDestino2);
                     if(editTextDestino2.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino2);
@@ -75,7 +75,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino2)
                 {
-                    usuario.getPlaceIdDestino()[1] = s;
+                    usuario.getPlaceIdDestino().add(s);
                     editTextDestino3 = context.get().findViewById(R.id.editTextDestino3);
                     if(editTextDestino3.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino3);
@@ -84,7 +84,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino3)
                 {
-                    usuario.getPlaceIdDestino()[2] = s;
+                    usuario.getPlaceIdDestino().add(s);
                     editTextDestino4 = context.get().findViewById(R.id.editTextDestino4);
                     if(editTextDestino4.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino4);
@@ -93,7 +93,7 @@ public class AddressOperation extends AsyncTask<String, Void, String> {
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino4)
                 {
-                    usuario.getPlaceIdDestino()[3] = s;
+                    usuario.getPlaceIdDestino().add(s);
                 }
             }
         });

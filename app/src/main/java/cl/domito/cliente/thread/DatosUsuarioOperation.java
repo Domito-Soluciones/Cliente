@@ -4,11 +4,15 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.MapsActivity;
@@ -29,20 +33,41 @@ public class DatosUsuarioOperation  extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         Usuario usuario = Usuario.getInstance();
-        String url = Utilidades.URL_BASE_USUARIO + "DatosUsuario.php?id="+usuario.getNick();
+        String url = Utilidades.URL_BASE_USUARIO + "GetPasajero.php";
         try {
-            JSONObject jsonObject = RequestUsuario.datosUsuario(url);
+            List<NameValuePair> params = new ArrayList();
+            params.add(new BasicNameValuePair("id",usuario.getNick()));
+            JSONObject jsonObject = RequestUsuario.datosUsuario(url,params);
             context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
             if(jsonObject != null) {
-                usuario.setNombre(jsonObject.getString("usuario_nombre"));
-                usuario.setCliente(jsonObject.getString("usuario_cliente"));
-                usuario.setPassword(jsonObject.getString("usuario_password"));
-                usuario.setCelular(jsonObject.getString("usuario_celular"));
-                usuario.setDireccion(jsonObject.getString("usuario_direccion"));
+                usuario.setId(jsonObject.getString("pasajero_id"));
+                String nombre = jsonObject.getString("pasajero_nombre") + " " + jsonObject.getString("pasajero_papellido")
+                        + " " +  jsonObject.getString("pasajero_mapellido");
+                usuario.setNombre(nombre);
+                usuario.setMail(jsonObject.getString("pasajero_mail"));
+                usuario.setCliente(jsonObject.getString("pasajero_cliente"));
+                usuario.setCelular(jsonObject.getString("pasajero_celular"));
+                usuario.setDireccion(jsonObject.getString("pasajero_direccion"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
+                textView.setText(Usuario.getInstance().getNombre());
+            }
+        });
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
     }
 }
