@@ -31,24 +31,24 @@ public class DetalleServicioOperation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        List<LatLng> lista = Usuario.getInstance().getLatLngs();
-        StringBuilder lat = new StringBuilder();
-        StringBuilder lon = new StringBuilder();
-        for(int i = 0 ; i < lista.size() ; i++)
-        {
-            LatLng latLng = lista.get(i);
-            lat.append(latLng.latitude);
-            lat.append(",");
-            lon.append(latLng.longitude);
-            lon.append(",");
-        }
-        String url = Utilidades.URL_BASE_SERVICIO + "AddServicioDetalle.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("lat", lat.toString()));
-        params.add(new BasicNameValuePair("lon", lon.toString()));
-        params.add(new BasicNameValuePair("id",Usuario.getInstance().getIdViaje()));
-        Utilidades.enviarPost(url,params);
-        return null;
+    List<LatLng> lista = Usuario.getInstance().getLatLngs();
+    StringBuilder lat = new StringBuilder();
+    StringBuilder lon = new StringBuilder();
+    for(int i = 0 ; i < lista.size() ; i++)
+    {
+        LatLng latLng = lista.get(i);
+        lat.append(latLng.latitude);
+        lat.append(",");
+        lon.append(latLng.longitude);
+        lon.append(",");
     }
+    String url = Utilidades.URL_BASE_SERVICIO + "AddServicioDetalle.php";
+    List<NameValuePair> params = new ArrayList<NameValuePair>();
+    params.add(new BasicNameValuePair("lat", lat.toString()));
+    params.add(new BasicNameValuePair("lon", lon.toString()));
+    params.add(new BasicNameValuePair("id",Usuario.getInstance().getIdViaje()));
+    Utilidades.enviarPost(url,params);
+    return null;
+}
 
 }
