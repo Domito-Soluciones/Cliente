@@ -19,12 +19,6 @@ import cl.domito.cliente.http.Utilidades;
 
 public class SolicitarViajeService extends Service {
 
-    Context ctx;
-
-    public SolicitarViajeService(Context ctx) {
-        this.ctx = ctx;
-    }
-
     int estadoServicio = 0;
 
     @Override
@@ -58,7 +52,7 @@ public class SolicitarViajeService extends Service {
         }
         try {
             System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil")+ " ahora debo cerrar el activity");
-            Activity activity = (Activity) ctx;
+            Activity activity = (Activity) this.getApplicationContext();
             activity.finish();
         }
         catch(Exception e)
