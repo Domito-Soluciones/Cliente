@@ -1,5 +1,6 @@
 package cl.domito.cliente.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
+import cl.domito.cliente.service.SolicitarViajeService;
 import cl.domito.cliente.thread.LoginOperation;
 import cl.domito.cliente.dominio.Usuario;
 

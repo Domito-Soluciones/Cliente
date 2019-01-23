@@ -28,6 +28,9 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ServicioActivity" />
         <activity android:name=".activity.SolicitarActivity" />
+
+        <service android:name=".service.SolicitarViajeService"></service>
+
     </application>
 
 </manifest>

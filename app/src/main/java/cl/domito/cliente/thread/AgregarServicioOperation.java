@@ -23,6 +23,7 @@ import cl.domito.cliente.activity.SplashScreenActivity;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.service.SolicitarViajeService;
 
 public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
 
@@ -42,16 +43,15 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
         Usuario usuario = Usuario.getInstance();
         params.add(new BasicNameValuePair("app", "app"));
         try {
-            params.add(new BasicNameValuePair("partida", new String(usuario.getPlaceIdOrigen().getBytes(),"ISO-8859-1")));
-            params.add(new BasicNameValuePair("destino", new String(usuario.getPlaceIdDestino().get(usuario.getCantidadDestinos()-1).getBytes(),"ISO-8859-1")));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
-        params.add(new BasicNameValuePair("usuario", usuario.getNick()));
-        JSONObject servicio = Utilidades.enviarPost(url,params);
-        try {
+            params.add(new BasicNameValuePair("partida", new String(usuario.getPlaceIdOrigen().getBytes(), "ISO-8859-1")));
+            params.add(new BasicNameValuePair("destino", new String(usuario.getPlaceIdDestino().get(usuario.getCantidadDestinos() - 1).getBytes(), "ISO-8859-1")));
+            params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
+            params.add(new BasicNameValuePair("usuario", usuario.getNick()));
+            JSONObject servicio = Utilidades.enviarPost(url, params);
             usuario.setIdViaje(servicio.getString("servicio_id"));
+            Intent i = new Intent(context.get(), SolicitarViajeService.class);
+            i.putExtra("idServicio",usuario.getIdViaje());
+            context.get().startService(i);
         }
         catch(Exception e)
         {
