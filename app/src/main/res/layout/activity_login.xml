@@ -86,6 +86,7 @@
         android:layout_height="@dimen/input_login_height"
         android:background="@drawable/estilo_boton"
         android:gravity="center_vertical|center_horizontal"
+        android:text="@string/input_button"
         android:textColor="@color/blanco"
         android:textSize="@dimen/input_texto_login"
         android:textStyle="bold"

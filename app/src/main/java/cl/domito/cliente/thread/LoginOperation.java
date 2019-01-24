@@ -60,11 +60,13 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "Login.php",params);
+        //boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "Login.php",params);
+        boolean login = true;
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             usuario.setActivo(true);
-            usuario.setNick(strings[0]);
+            //usuario.setNick(strings[0]);
+            usuario.setNick("msoto");
             if(usuario.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                 (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
