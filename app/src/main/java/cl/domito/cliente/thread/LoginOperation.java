@@ -60,18 +60,15 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        //boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "Login.php",params);
-        boolean login = true;
+        boolean login = RequestUsuario.loginUsuario(Utilidades.URL_BASE_USUARIO + "Login.php",params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             usuario.setActivo(true);
-            //usuario.setNick(strings[0]);
-            usuario.setNick("msoto");
+            usuario.setNick(strings[0]);
             if(usuario.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
-                (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
-                ActivityUtils.guardarSharedPreferences(pref,loginActivity.getString(
-                        R.string.sharedPreferenceKeyUser),usuario.getNick());
+                ("preferencias",Context.MODE_PRIVATE);
+                ActivityUtils.guardarSharedPreferences(pref,"idUsuario",usuario.getNick());
             }
             String url = Utilidades.URL_BASE_USUARIO + "ModEstadoPasajero.php";
             List<NameValuePair> params2 = new ArrayList<NameValuePair>();
@@ -93,6 +90,4 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         }
         return null;
     }
-
-
 }

@@ -2,6 +2,7 @@ package cl.domito.cliente.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import cl.domito.cliente.R;
@@ -659,6 +662,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
 
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            String value = intent.getStringExtra("value");
+            switch (message)
+            {
+
+            }
+        }
+    };
+
 
 }
 

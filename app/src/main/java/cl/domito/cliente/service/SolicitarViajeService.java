@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -66,5 +67,15 @@ public class SolicitarViajeService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
+        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+        sendBroadcast(broadcastIntent);
+    }
+
+    private void sendMessage(String message,String value) {
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", message);
+        intent.putExtra("value", value);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

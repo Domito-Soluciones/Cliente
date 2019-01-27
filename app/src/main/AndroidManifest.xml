@@ -29,7 +29,15 @@
         <activity android:name=".activity.ServicioActivity" />
         <activity android:name=".activity.SolicitarActivity" />
 
-        <service android:name=".service.SolicitarViajeService"></service>
+        <service android:name=".service.SolicitarViajeService"
+            android:enabled="true"/>
+
+        <receiver
+            android:name=".service.RestartBroadcastReceived"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartBroadcastReceived">
+        </receiver>
 
     </application>
 

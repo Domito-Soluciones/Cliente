@@ -19,7 +19,7 @@ public class SolicitarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_servicio);
+        setContentView(R.layout.activity_solicitar);
         this.getSupportActionBar().hide();
         buttonCancelar = findViewById(R.id.button3);
         buttonCancelar.setOnClickListener(new View.OnClickListener() {

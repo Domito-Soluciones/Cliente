@@ -28,10 +28,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 SharedPreferences pref = getApplicationContext().getSharedPreferences
-                        (getString(R.string.sharedPreferenceFile), Context.MODE_PRIVATE);
-                String idUsuario = pref.getString(getString(R.string.sharedPreferenceKeyUser),
-                        "0");
-                if(!idUsuario.equals("0"))
+                        ("preferencias", Context.MODE_PRIVATE);
+                String idUsuario = pref.getString("idUsuario",
+                        "");
+                if(!idUsuario.equals(""))
                 {
                     Usuario.getInstance().setNick(idUsuario);
                     Intent mainIntent = new Intent(SplashScreenActivity.this,MapsActivity.class);

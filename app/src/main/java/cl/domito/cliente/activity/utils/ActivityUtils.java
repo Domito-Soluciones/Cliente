@@ -119,7 +119,7 @@ public class ActivityUtils {
                     if (i == largo) {
                         continue;
                     }
-                    waypointsBuilder.append(destinos.get(i)).append("|");
+                    waypointsBuilder.append(URLEncoder.encode(destinos.get(i), "utf8")).append("|");
                 }
                 waypoints = waypointsBuilder.toString().substring(0, waypointsBuilder.toString().length() - 1);
             }
@@ -188,7 +188,7 @@ public class ActivityUtils {
 
     public static void eliminarSharedPreferences(SharedPreferences sharedPreferences,String key)
     {
-        sharedPreferences.edit().remove(key).commit();
+        sharedPreferences.edit().putString(key, "").commit();
     }
 
     public static void enviarNotificacion(Activity activity,String titulo,String contenido,int smallIcon)

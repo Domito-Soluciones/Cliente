@@ -36,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-            loginUsuario();
-        }
+                loginUsuario();
+            }
         });
         checkBoxRec.setOnClickListener(new OnClickListener() {
             @Override
