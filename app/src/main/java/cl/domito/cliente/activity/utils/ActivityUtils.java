@@ -292,5 +292,11 @@ public class ActivityUtils {
         return Math.round((float) dp * density);
     }
 
+    public static void llamar(Activity activity,String numero)
+    {
+        String dial = numero;
+        activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+
+    }
 
 }

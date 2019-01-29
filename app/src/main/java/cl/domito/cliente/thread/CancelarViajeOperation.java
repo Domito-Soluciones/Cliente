@@ -12,9 +12,9 @@ import java.util.List;
 import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.http.Utilidades;
 
-public class CancelarViajeOperation extends AsyncTask<String, Void, Void> {
+public class CancelarViajeOperation extends AsyncTask<Void, Void, Void> {
     @Override
-    protected Void doInBackground(String... strings) {
+    protected Void doInBackground(Void... voids) {
         String url = Utilidades.URL_BASE_SERVICIO + "DelServicio.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         Usuario usuario = Usuario.getInstance();

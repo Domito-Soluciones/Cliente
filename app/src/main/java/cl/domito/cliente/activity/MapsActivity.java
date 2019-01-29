@@ -45,8 +45,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -57,14 +61,14 @@ import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.service.SolicitarViajeService;
 import cl.domito.cliente.thread.AddressOperation;
 import cl.domito.cliente.thread.AgregarServicioOperation;
+import cl.domito.cliente.thread.CancelarViajeOperation;
 import cl.domito.cliente.thread.DatosUsuarioOperation;
 import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.thread.DetalleServicioOperation;
 import cl.domito.cliente.thread.DirectionsOperation;
 import cl.domito.cliente.thread.PlacesOperation;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
-{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
     private GoogleMap mMap;
     private GoogleApiClient apiClient;
     private SupportMapFragment mapFragment;
@@ -79,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ConstraintLayout constrainLayoutInicioViaje;
     private ConstraintLayout constrainLayoutConfirmarViaje;
     private ConstraintLayout constrainLayoutPlaces;
+    private ConstraintLayout constrainLayoutConductor;
     private Button buttonSolicitar;
     private Button buttonConfirmar;
     private TextView textViewDetalleOrigen;
@@ -97,6 +102,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textView3;
     private TextView textView4;
     private LocationManager locationManager;
+    private ImageView imageViewLlamar;
+    private TextView textViewPatente;
+    private TextView textViewConductor;
+    private Button buttonCancelar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageButtonMenu = findViewById(R.id.imageViewMenu);
         imageButtonAtras = findViewById(R.id.imageViewAtras);
         navigationView = findViewById(R.id.nav_view);
-        textViewInicio  = findViewById(R.id.textViewPartida);
+        textViewInicio = findViewById(R.id.textViewPartida);
         imageViewPoint = findViewById(R.id.imageViewPointer);
         buttonSolicitar = findViewById(R.id.buttonSolicitar);
         buttonConfirmar = findViewById(R.id.button);
@@ -124,6 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         constrainLayoutInicioViaje = findViewById(R.id.constrainLayoutInicioViaje);
         constrainLayoutConfirmarViaje = findViewById(R.id.constrainLayoutConfirmarViaje);
         constrainLayoutPlaces = findViewById(R.id.constrainLayoutPlaces);
+        constrainLayoutConductor = findViewById(R.id.constrainLayoutConductor);
         progressBar = findViewById(R.id.progressBarGeneral);
         textViewMapa = findViewById(R.id.textViewMapa);
         textView1 = findViewById(R.id.textViewRes1);
@@ -131,21 +141,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textView3 = findViewById(R.id.textViewRes3);
         textView4 = findViewById(R.id.textViewRes4);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
+        imageViewLlamar = findViewById(R.id.imageViewLlamar);
+        textViewPatente = findViewById(R.id.textViewPatente);
+        textViewConductor = findViewById(R.id.textViewConductor);
+        buttonCancelar = findViewById(R.id.buttonCancelar);
         DatosUsuarioOperation datosUsuarioOperation = new DatosUsuarioOperation(this);
         datosUsuarioOperation.execute();
 
         editTextPartida.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
-                    Usuario.getInstance().setEditTextCompletar(v);
-                    editTextPartida.clearFocus();
-                    editTextPartida.requestFocus();
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
+                Usuario.getInstance().setEditTextCompletar(v);
+                editTextPartida.clearFocus();
+                editTextPartida.requestFocus();
+            }
+        });
         editTextDestino.setOnClickListener(new View.OnClickListener() {
-                @Override
+            @Override
             public void onClick(View v) {
                 Usuario.getInstance().setTipoBusqueda(Usuario.SELECCIONAR_PLACES);
                 Usuario.getInstance().setEditTextCompletar(v);
@@ -359,6 +372,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CancelarViajeOperation cancelarViajeOperation = new CancelarViajeOperation();
+                cancelarViajeOperation.execute();
+                Usuario.getInstance().setEnProceso(false);
+                constrainLayoutConductor.setVisibility(View.GONE);
+            }
+        });
+
+        imageViewLlamar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    llamar();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         mapFragment.getMapAsync(this);
         navigationView.setItemIconTintList(null);
@@ -386,18 +419,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawerLayout.requestLayout();
     }
 
+    private void llamar()
+    {
+        String numero = null;
+        try {
+            numero = Usuario.getInstance().getDatosConductor().getString("conductor_celular");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ActivityUtils.llamar(this,numero);
+    }
+
     private void abrirBuscadorServicios()
-{
-    Usuario.getInstance().setBuscaServicio(true);
-    constraintLayoutToolbar.setVisibility(View.GONE);
-    constraintLayoutIngresaViaje.setVisibility(View.VISIBLE);
-    constraintLayoutIngresaViaje.bringToFront();
-    constrainLayoutInicioViaje.setVisibility(View.GONE);
-    imageViewPoint.setVisibility(View.VISIBLE);
-    Usuario usuario = Usuario.getInstance();
-    AddressOperation addressOperation = new AddressOperation(this);
-    addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "");
-}
+    {
+        Usuario.getInstance().setBuscaServicio(true);
+        constraintLayoutToolbar.setVisibility(View.GONE);
+        constraintLayoutIngresaViaje.setVisibility(View.VISIBLE);
+        constraintLayoutIngresaViaje.bringToFront();
+        constrainLayoutInicioViaje.setVisibility(View.GONE);
+        imageViewPoint.setVisibility(View.VISIBLE);
+        Usuario usuario = Usuario.getInstance();
+        AddressOperation addressOperation = new AddressOperation(this);
+        addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "");
+    }
 
     private void volver()
     {
@@ -567,6 +611,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
+        Usuario.getInstance().setUbicacion(new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()));
 
         ActivityUtils.updateUI(this,mMap,lastLocation);
     }
@@ -593,10 +638,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onResume() {
+        Usuario usuario = Usuario.getInstance();
         super.onResume();
         if(mMap != null) {
             //mMap.clear();
-            constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
+            if(Usuario.getInstance().isEnProceso())
+            {
+                constrainLayoutInicioViaje.setVisibility(View.GONE);
+                mMap.clear();
+                LatLng ubicacionUsuario = usuario.getUbicacion();
+                LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
+                latLngBounds.include(usuario.getUbicacionConductor()).include(ubicacionUsuario);
+                mMap.addMarker(new MarkerOptions().position(usuario.getUbicacionConductor()));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
+                JSONObject conductor = Usuario.getInstance().getDatosConductor();
+                try {
+                    String patente = conductor.getString("movil_patente");
+                    String marca = conductor.getString("movil_marca");
+                    String modelo = conductor.getString("movil_modelo");
+                    String nombre = conductor.getString("conductor_nombre") + " " + conductor.getString("conductor_papellido");
+                    String celular = conductor.getString("conductor_celular");
+                    textViewPatente.setText(patente+" " + marca +" " + modelo);
+                    textViewConductor.setText(nombre+" " + celular);
+                }
+                catch(JSONException e)
+                {
+                    e.printStackTrace();
+
+                }
+                constrainLayoutConductor.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
+            }
             constrainLayoutConfirmarViaje.setVisibility(View.GONE);
         }
     }

@@ -27,7 +27,7 @@ public class GetConductorOperation extends AsyncTask<String, Void, JSONObject> {
         String movil = strings[0];
         String url = Utilidades.URL_BASE_MOVIL + "GetMovilConductor.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("id",movil));
+        params.add(new BasicNameValuePair("movil",movil));
         conductor = Utilidades.enviarPost(url,params);
         return conductor;
     }

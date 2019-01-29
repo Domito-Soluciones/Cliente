@@ -13,7 +13,7 @@ import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.activity.utils.ActivityUtils;
 import cl.domito.cliente.dominio.Usuario;
 
-public class AddressOperation extends AsyncTask<String, Void, String> {
+public class                                                        AddressOperation extends AsyncTask<String, Void, String> {
 
 
     private WeakReference<MapsActivity> context;

@@ -14,11 +14,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
+import cl.domito.cliente.dominio.Usuario;
+import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
 import cl.domito.cliente.service.SolicitarViajeService;
 import cl.domito.cliente.thread.CancelarViajeOperation;
@@ -82,7 +89,16 @@ public class SolicitarActivity extends AppCompatActivity {
                     notificar("Servicio En camino","");
                 break;
                 case SolicitarViajeService.CREAR_MARCADOR_MOVIL:
-                    crearMarcador();
+                    try {
+                        JSONObject conductor = new JSONObject(value);
+                        Usuario.getInstance().setDatosConductor(conductor);
+                        LatLng latLng = new LatLng(conductor.getDouble("movil_lat"),conductor.getDouble("movil_lon"));
+                        crearMarcador(latLng);
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
@@ -98,12 +114,10 @@ public class SolicitarActivity extends AppCompatActivity {
         ActivityUtils.enviarNotificacion(this,titulo,valor, R.drawable.furgoneta);
     }
 
-    private void crearMarcador()
+    private void crearMarcador(LatLng ubicacion)
     {
-
-        //mMap.addMarker(new MarkerOptions().position(sydney)
-        //        .title("Marker in Sydney"));
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Usuario.getInstance().setEnProceso(true);
+        Usuario.getInstance().setUbicacionConductor(ubicacion);
     }
 
 }

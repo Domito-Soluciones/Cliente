@@ -2,6 +2,7 @@ package cl.domito.cliente.thread;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void s) {
-
+        Usuario usuario = Usuario.getInstance();
+        Usuario.getInstance().setBuscaServicio(false);
     }
 }

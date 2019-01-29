@@ -2,7 +2,10 @@ package cl.domito.cliente.dominio;
 
 import android.view.View;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,10 @@ public class Usuario {
     private List<LatLng> latLngs;
     private int cantidadDestinos = 1;
     private View editTextCompletar;
+    private LatLng ubicacion;
+    private LatLng ubicacionConductor;
+    private boolean enProceso;
+    private JSONObject datosConductor;
 
     public static synchronized Usuario getInstance(){
         if(instance == null){
@@ -224,4 +231,35 @@ public class Usuario {
         this.editTextCompletar = editTextCompletar;
     }
 
+    public LatLng getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(LatLng ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public boolean isEnProceso() {
+        return enProceso;
+    }
+
+    public void setEnProceso(boolean enProceso) {
+        this.enProceso = enProceso;
+    }
+
+    public LatLng getUbicacionConductor() {
+        return ubicacionConductor;
+    }
+
+    public void setUbicacionConductor(LatLng ubicacionConductor) {
+        this.ubicacionConductor = ubicacionConductor;
+    }
+
+    public JSONObject getDatosConductor() {
+        return datosConductor;
+    }
+
+    public void setDatosConductor(JSONObject datosConductor) {
+        this.datosConductor = datosConductor;
+    }
 }

@@ -75,8 +75,8 @@ public class SolicitarViajeService extends Service {
                         System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil") + " ahora debo cerrar el activity");
                         GetConductorOperation getConductorOperation = new GetConductorOperation();
                         JSONObject conductor = getConductorOperation.execute(jsonObject.getString("servicio_movil")).get();
-                        sendMessage(CREAR_MARCADOR_MOVIL,null);
-                        sendMessage2(OCULTAR_LAYOUT_SERVICIO, null);
+                        sendMessage(CREAR_MARCADOR_MOVIL,conductor.toString());
+                        sendMessage(OCULTAR_LAYOUT_SERVICIO,null);
                     }
                 }
                 catch(Exception e)
@@ -100,18 +100,10 @@ public class SolicitarViajeService extends Service {
     }
 
     private void sendMessage(String message,String value) {
-        Intent intent = new Intent(this, SolicitarActivity.class);
-        // You can also include some extra data.
+        Intent intent = new Intent("custom-event-name");
         intent.putExtra("message", message);
         intent.putExtra("value", value);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void sendMessage2(String message,String value) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        // You can also include some extra data.
-        intent.putExtra("message", message);
-        intent.putExtra("value", value);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
 }
