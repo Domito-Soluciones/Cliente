@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.google.gson.JsonObject;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -14,13 +16,25 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import cl.domito.cliente.activity.MapsActivity;
+import cl.domito.cliente.activity.SolicitarActivity;
+import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.http.RequestUsuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.thread.GetConductorOperation;
+import cl.domito.cliente.thread.SolicitarServicioOperation;
 
 public class SolicitarViajeService extends Service {
 
     int estadoServicio = 0;
+
+    public static boolean TERMINAR = true;
+    public static final String OCULTAR_LAYOUT_SERVICIO = "0";
+    public static final String MOSTRAR_NOTIFICACION_SERVICIO= "1";
+    public static final String CREAR_MARCADOR_MOVIL = "2";
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,32 +48,44 @@ public class SolicitarViajeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        JSONObject jsonObject = null;
-        while (estadoServicio < 2) {
-            try {
-                System.out.println("esperando que el id sea mayor a 2");
-                String url = Utilidades.URL_BASE_SERVICIO + "GetServicio.php";
-                List<NameValuePair> params = new ArrayList();
-                params.add(new BasicNameValuePair("id",intent.getExtras().get("idServicio").toString()));
-                jsonObject = Utilidades.enviarPost(url,params);
-                estadoServicio = jsonObject.getInt("servicio_estado");
-                this.stopSelf();
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }  catch (JSONException e) {
-                e.printStackTrace();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonObject = null;
+                while (estadoServicio < 2) {
+                    try {
+                        System.out.println("esperando que el id sea mayor a 2");
+                        System.out.println(intent.getExtras().get("idServicio"));
+                        String idServicio = intent.getExtras().get("idServicio").toString();
+                        SolicitarServicioOperation solicitarServicioOperation = new SolicitarServicioOperation();
+                        jsonObject = solicitarServicioOperation.execute(idServicio).get();
+                        estadoServicio = jsonObject.getInt("servicio_estado");
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }  catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    if (estadoServicio == 2) {
+                        sendMessage(MOSTRAR_NOTIFICACION_SERVICIO,null);
+                        System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil") + " ahora debo cerrar el activity");
+                        GetConductorOperation getConductorOperation = new GetConductorOperation();
+                        JSONObject conductor = getConductorOperation.execute(jsonObject.getString("servicio_movil")).get();
+                        sendMessage(CREAR_MARCADOR_MOVIL,null);
+                        sendMessage2(OCULTAR_LAYOUT_SERVICIO, null);
+                    }
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
-        }
-        try {
-            System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil")+ " ahora debo cerrar el activity");
-            Activity activity = (Activity) this.getApplicationContext();
-            activity.finish();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        });
+        thread.start();
         return Service.START_STICKY ;
     }
 
@@ -67,12 +93,22 @@ public class SolicitarViajeService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
-        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
-        sendBroadcast(broadcastIntent);
+        if(TERMINAR) {
+            Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     private void sendMessage(String message,String value) {
-        Intent intent = new Intent("custom-event-name");
+        Intent intent = new Intent(this, SolicitarActivity.class);
+        // You can also include some extra data.
+        intent.putExtra("message", message);
+        intent.putExtra("value", value);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void sendMessage2(String message,String value) {
+        Intent intent = new Intent(this, MapsActivity.class);
         // You can also include some extra data.
         intent.putExtra("message", message);
         intent.putExtra("value", value);

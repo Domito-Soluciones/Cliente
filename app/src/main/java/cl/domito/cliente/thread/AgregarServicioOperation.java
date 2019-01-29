@@ -46,7 +46,7 @@ public class AgregarServicioOperation extends AsyncTask<String, Void, Void> {
             params.add(new BasicNameValuePair("partida", new String(usuario.getPlaceIdOrigen().getBytes(), "ISO-8859-1")));
             params.add(new BasicNameValuePair("destino", new String(usuario.getPlaceIdDestino().get(usuario.getCantidadDestinos() - 1).getBytes(), "ISO-8859-1")));
             params.add(new BasicNameValuePair("cliente", usuario.getCliente()));
-            params.add(new BasicNameValuePair("usuario", usuario.getNick()));
+            params.add(new BasicNameValuePair("usuario", usuario.getNombre()));
             JSONObject servicio = Utilidades.enviarPost(url, params);
             usuario.setIdViaje(servicio.getString("servicio_id"));
             Intent i = new Intent(context.get(), SolicitarViajeService.class);

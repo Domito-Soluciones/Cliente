@@ -27,8 +27,8 @@ import cl.domito.cliente.dominio.Usuario;
 
 public class Utilidades {
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
-    //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
@@ -64,6 +64,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
+                System.out.println(line);
             }
             System.out.println(result.toString());
             jsonObject = new JSONObject(result.toString());

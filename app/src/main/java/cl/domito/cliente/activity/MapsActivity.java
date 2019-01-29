@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,6 +22,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
@@ -38,10 +40,13 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -49,6 +54,7 @@ import java.util.List;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
+import cl.domito.cliente.service.SolicitarViajeService;
 import cl.domito.cliente.thread.AddressOperation;
 import cl.domito.cliente.thread.AgregarServicioOperation;
 import cl.domito.cliente.thread.DatosUsuarioOperation;
@@ -91,16 +97,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView textView3;
     private TextView textView4;
     private LocationManager locationManager;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(mMap != null) {
-            mMap.clear();
-            constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
-            constrainLayoutConfirmarViaje.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -596,6 +592,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(mMap != null) {
+            //mMap.clear();
+            constrainLayoutInicioViaje.setVisibility(View.VISIBLE);
+            constrainLayoutConfirmarViaje.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onProviderDisabled(String provider) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Activar Ubicación");
@@ -663,17 +674,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            String value = intent.getStringExtra("value");
-            switch (message)
-            {
 
-            }
-        }
-    };
+    private void crearMarcador()
+    {
+        LatLng sydney = new LatLng(-33.852, 151.211);
+        mMap.addMarker(new MarkerOptions().position(sydney)
+                .title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
 
 
 }
