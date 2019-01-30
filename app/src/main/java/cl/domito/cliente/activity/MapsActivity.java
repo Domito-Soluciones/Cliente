@@ -376,10 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         buttonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CancelarViajeOperation cancelarViajeOperation = new CancelarViajeOperation();
-                cancelarViajeOperation.execute();
-                Usuario.getInstance().setEnProceso(false);
-                constrainLayoutConductor.setVisibility(View.GONE);
+                cancelar();
             }
         });
 
@@ -759,6 +756,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    private void cancelar()
+    {
+        CancelarViajeOperation cancelarViajeOperation = new CancelarViajeOperation(this);
+        cancelarViajeOperation.execute(mMap);
+    }
+
 
 
 
