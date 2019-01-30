@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -423,7 +424,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         String numero = null;
         try {
-            numero = Usuario.getInstance().getDatosConductor().getString("conductor_celular");
+            numero = Usuario.getInstance().getDatosConductor().getJSONObject("movil_conductor").getString("conductor_celular");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -656,8 +657,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String patente = conductor.getString("movil_patente");
                     String marca = conductor.getString("movil_marca");
                     String modelo = conductor.getString("movil_modelo");
-                    String nombre = conductor.getString("conductor_nombre") + " " + conductor.getString("conductor_papellido");
-                    String celular = conductor.getString("conductor_celular");
+                    JSONObject datosConductor = conductor.getJSONObject("movil_conductor");
+                    String nombre = datosConductor.getString("conductor_nombre") + " " + datosConductor.getString("conductor_papellido");
+                    String celular = datosConductor.getString("conductor_celular");
                     textViewPatente.setText(patente+" " + marca +" " + modelo);
                     textViewConductor.setText(nombre+" " + celular);
                 }
