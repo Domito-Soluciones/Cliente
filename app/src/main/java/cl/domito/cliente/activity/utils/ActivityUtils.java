@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.LoginActivity;
@@ -106,10 +107,23 @@ public class ActivityUtils {
         return results;
     }
 
-    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,List<String> destinos)
+    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,Map<String,String> destinos)
     {
         int largo = destinos.size();
-        String destinoFinal = destinos.get( destinos.size()-1 );
+        String llave = "destino";
+        if(destinos.size() == 2)
+        {
+            llave = "destino2";
+        }
+        else if(destinos.size() == 3)
+        {
+            llave = "destino3";
+        }
+        else if(destinos.size() == 4)
+        {
+            llave = "destino4";
+        }
+        String destinoFinal = destinos.get( llave );
         String waypoints = "";
         StringBuilder waypointsBuilder = new StringBuilder();
         List<LatLng> polyline = null;
@@ -169,14 +183,16 @@ public class ActivityUtils {
     }
 
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
-        if (loc != null) {
-            Usuario.getInstance().setLatitud(loc.getLatitude());
-            Usuario.getInstance().setLongitud(loc.getLongitude());
-            LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else {
-            Toast.makeText(activity, "mal", Toast.LENGTH_LONG);
+        if(!Usuario.getInstance().isEnProceso()) {
+            if (loc != null) {
+                Usuario.getInstance().setLatitud(loc.getLatitude());
+                Usuario.getInstance().setLongitud(loc.getLongitude());
+                LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            } else {
+                Toast.makeText(activity, "mal", Toast.LENGTH_LONG);
+            }
         }
     }
 

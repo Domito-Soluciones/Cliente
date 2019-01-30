@@ -3,6 +3,8 @@ package cl.domito.cliente.thread;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -25,11 +27,11 @@ public class CancelarViajeOperation extends AsyncTask<Object, Void, Void> {
     private WeakReference<MapsActivity> context;
     GoogleMap map;
 
-    public CancelarViajeOperation(MapsActivity mapsActivity) {
+    public CancelarViajeOperation() {
     }
 
-    public CancelarViajeOperation(WeakReference<MapsActivity> context) {
-        this.context = context;
+    public CancelarViajeOperation(MapsActivity mapsActivity) {
+        context = new WeakReference<MapsActivity>(mapsActivity);
     }
 
     @Override
@@ -50,15 +52,32 @@ public class CancelarViajeOperation extends AsyncTask<Object, Void, Void> {
     }
 
     @Override
+    protected void onPreExecute() {
+        Button buttonCancelar = context.get().findViewById(R.id.buttonCancelar);
+        buttonCancelar.setText("Cancelando...");
+    }
+
+    @Override
     protected void onPostExecute(Void aVoid) {
-        System.out.println("");
         if(context != null) {
             Usuario.getInstance().setEnProceso(false);
             ConstraintLayout constrainLayoutConductor = context.get().findViewById(R.id.constrainLayoutConductor);
-            TextView textViewInicio = context.get().findViewById(R.id.textViewPartida);
+            ConstraintLayout constraintLayoutInicio = context.get().findViewById(R.id.constrainLayoutInicioViaje);
             constrainLayoutConductor.setVisibility(View.GONE);
             map.clear();
-            textViewInicio.setVisibility(View.VISIBLE);
+            constraintLayoutInicio.setVisibility(View.VISIBLE);
+            EditText editTextPartida = context.get().findViewById(R.id.editTextPartida);
+            EditText editTextDestino = context.get().findViewById(R.id.editTextDestino);
+            EditText editTextDestino2 = context.get().findViewById(R.id.editTextDestino2);
+            EditText editTextDestino3 = context.get().findViewById(R.id.editTextDestino3);
+            EditText editTextDestino4 = context.get().findViewById(R.id.editTextDestino4);
+            Usuario.getInstance().setEditTextCompletar(null);
+            editTextPartida.requestFocus();
+            editTextPartida.setText("");
+            editTextDestino.setText("");
+            editTextDestino2.setText("");
+            editTextDestino3.setText("");
+            editTextDestino4.setText("");
         }
     }
 }

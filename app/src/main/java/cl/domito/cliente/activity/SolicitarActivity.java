@@ -89,16 +89,7 @@ public class SolicitarActivity extends AppCompatActivity {
                     notificar("Servicio En camino","");
                 break;
                 case SolicitarViajeService.CREAR_MARCADOR_MOVIL:
-                    try {
-                        JSONObject conductor = new JSONObject(value);
-                        Usuario.getInstance().setDatosConductor(conductor);
-                        LatLng latLng = new LatLng(conductor.getDouble("movil_lat"),conductor.getDouble("movil_lon"));
-                        crearMarcador(latLng);
-                    }
-                    catch(Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                        crearMarcador();
                     break;
             }
         }
@@ -114,10 +105,9 @@ public class SolicitarActivity extends AppCompatActivity {
         ActivityUtils.enviarNotificacion(this,titulo,valor, R.drawable.furgoneta);
     }
 
-    private void crearMarcador(LatLng ubicacion)
+    private void crearMarcador()
     {
         Usuario.getInstance().setEnProceso(true);
-        Usuario.getInstance().setUbicacionConductor(ubicacion);
     }
 
 }

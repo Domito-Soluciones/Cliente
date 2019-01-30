@@ -74,9 +74,10 @@ public class SolicitarViajeService extends Service {
                         sendMessage(MOSTRAR_NOTIFICACION_SERVICIO,null);
                         System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil") + " ahora debo cerrar el activity");
                         GetConductorOperation getConductorOperation = new GetConductorOperation();
-                        JSONObject conductor = getConductorOperation.execute(jsonObject.getString("servicio_movil")).get();
-                        sendMessage(CREAR_MARCADOR_MOVIL,conductor.toString());
+                        Usuario.getInstance().setDatosConductor(getConductorOperation.execute(jsonObject.getString("servicio_movil")).get());
+                        sendMessage(CREAR_MARCADOR_MOVIL,null);
                         sendMessage(OCULTAR_LAYOUT_SERVICIO,null);
+                        estadoServicio = 0;
                     }
                 }
                 catch(Exception e)

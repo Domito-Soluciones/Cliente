@@ -56,6 +56,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Map;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.utils.ActivityUtils;
@@ -452,6 +453,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         editTextDestino2.setVisibility(View.INVISIBLE);
         editTextDestino3.setVisibility(View.INVISIBLE);
         editTextDestino4.setVisibility(View.INVISIBLE);
+        buttonSolicitar.setVisibility(View.INVISIBLE);
+        buttonConfirmar.setVisibility(View.INVISIBLE);
+        Usuario.getInstance().setEditTextCompletar(null);
+        editTextPartida.requestFocus();
+        editTextPartida.setText("");
+        editTextDestino.setText("");
+        editTextDestino2.setText("");
+        editTextDestino3.setText("");
+        editTextDestino4.setText("");
         ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) constraintLayoutIngresaViaje.getLayoutParams();
         newLayoutParams.height = ActivityUtils.dpToPx(120,this);
         constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
@@ -522,7 +532,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void solicitarViaje() {
         String partida = Usuario.getInstance().getPlaceIdOrigen();
-        List<String> destinos = Usuario.getInstance().getPlaceIdDestino();
+        Map<String,String> destinos = Usuario.getInstance().getPlaceIdDestino();
         DirectionsOperation directionsOperation = new DirectionsOperation(this);
         directionsOperation.execute(mMap,partida,destinos);
     }
@@ -644,13 +654,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 constrainLayoutInicioViaje.setVisibility(View.GONE);
                 mMap.clear();
-                LatLng ubicacionUsuario = usuario.getUbicacion();
-                LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
-                latLngBounds.include(usuario.getUbicacionConductor()).include(ubicacionUsuario);
-                mMap.addMarker(new MarkerOptions().position(usuario.getUbicacionConductor()));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
-                JSONObject conductor = Usuario.getInstance().getDatosConductor();
                 try {
+                    JSONObject conductor = Usuario.getInstance().getDatosConductor();
+                    LatLng ubicacionConductor = new LatLng(conductor.getDouble("movil_lat"),
+                            conductor.getDouble("movil_lon"));
+                    LatLng ubicacionUsuario = usuario.getUbicacion();
+                    LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
+                    latLngBounds.include(ubicacionConductor).include(ubicacionUsuario);
+                    mMap.addMarker(new MarkerOptions().position(ubicacionConductor));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
                     String patente = conductor.getString("movil_patente");
                     String marca = conductor.getString("movil_marca");
                     String modelo = conductor.getString("movil_modelo");

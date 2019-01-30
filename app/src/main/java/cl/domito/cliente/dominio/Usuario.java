@@ -8,7 +8,9 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Usuario {
 
@@ -35,7 +37,7 @@ public class Usuario {
     private double longitud;
     private boolean buscaServicio;
     private String placeIdOrigen;
-    private List<String> placeIdDestino = new ArrayList();
+    private Map<String,String> placeIdDestino = new HashMap();
     private boolean conectado;
     private int tipoBusqueda;
     private boolean busquedaRealizada;
@@ -44,7 +46,6 @@ public class Usuario {
     private int cantidadDestinos = 1;
     private View editTextCompletar;
     private LatLng ubicacion;
-    private LatLng ubicacionConductor;
     private boolean enProceso;
     private JSONObject datosConductor;
 
@@ -167,11 +168,11 @@ public class Usuario {
         this.placeIdOrigen = placeIdOrigen;
     }
 
-    public List<String> getPlaceIdDestino() {
+    public Map<String,String> getPlaceIdDestino() {
         return placeIdDestino;
     }
 
-    public void setPlaceIdDestino(List<String> placeIdDestino) {
+    public void setPlaceIdDestino(Map<String,String> placeIdDestino) {
         this.placeIdDestino = placeIdDestino;
     }
 
@@ -245,14 +246,6 @@ public class Usuario {
 
     public void setEnProceso(boolean enProceso) {
         this.enProceso = enProceso;
-    }
-
-    public LatLng getUbicacionConductor() {
-        return ubicacionConductor;
-    }
-
-    public void setUbicacionConductor(LatLng ubicacionConductor) {
-        this.ubicacionConductor = ubicacionConductor;
     }
 
     public JSONObject getDatosConductor() {

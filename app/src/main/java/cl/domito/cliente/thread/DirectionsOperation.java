@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Map;
 
 import cl.domito.cliente.R;
 import cl.domito.cliente.activity.MapsActivity;
@@ -59,7 +60,7 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
         });
         GoogleMap mMap = (GoogleMap) objects[0];
         String partida = (String) objects[1];
-        List<String> destinos = (List) objects[2];
+        Map<String,String> destinos = (Map<String,String>) objects[2];
         List<LatLng> latLngs = ActivityUtils.getDirections(context.get(),mMap,partida,destinos);
         Usuario.getInstance().setLatLngs(latLngs);
         return null;
@@ -75,16 +76,16 @@ public class DirectionsOperation extends AsyncTask<Object, Void, Void> {
                     textViewDetalleOrigen.setText(Usuario.getInstance().getPlaceIdOrigen());
                     Usuario usuario = Usuario.getInstance();
                     if(usuario.getCantidadDestinos() == 1) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(0));
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get("destino"));
                     }
                     else if(usuario.getCantidadDestinos() == 2) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(1));
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get("destino2"));
                     }
                     if(usuario.getCantidadDestinos() == 3) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(2));
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get("destino3"));
                     }
                     if(usuario.getCantidadDestinos() == 4) {
-                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get(3));
+                        textViewDetalleDestino.setText(Usuario.getInstance().getPlaceIdDestino().get("destino4"));
                     }
                     constrainLayoutConfirmarViaje.setVisibility(View.VISIBLE);
                 }

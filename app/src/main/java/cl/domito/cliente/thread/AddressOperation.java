@@ -66,7 +66,7 @@ public class                                                        AddressOpera
                 else if(editTextACompletar.getId() == R.id.editTextDestino)
                 {
                     botonIniciar.setVisibility(View.VISIBLE);
-                    usuario.getPlaceIdDestino().add(s);
+                    usuario.getPlaceIdDestino().put("destino",s);
                     editTextDestino2 = context.get().findViewById(R.id.editTextDestino2);
                     if(editTextDestino2.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino2);
@@ -75,7 +75,7 @@ public class                                                        AddressOpera
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino2)
                 {
-                    usuario.getPlaceIdDestino().add(s);
+                    usuario.getPlaceIdDestino().put("destino2",s);
                     editTextDestino3 = context.get().findViewById(R.id.editTextDestino3);
                     if(editTextDestino3.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino3);
@@ -84,7 +84,7 @@ public class                                                        AddressOpera
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino3)
                 {
-                    usuario.getPlaceIdDestino().add(s);
+                    usuario.getPlaceIdDestino().put("destino3",s);
                     editTextDestino4 = context.get().findViewById(R.id.editTextDestino4);
                     if(editTextDestino4.getVisibility() == View.VISIBLE) {
                         usuario.setEditTextCompletar(editTextDestino4);
@@ -93,7 +93,7 @@ public class                                                        AddressOpera
                 }
                 else if(editTextACompletar.getId() == R.id.editTextDestino4)
                 {
-                    usuario.getPlaceIdDestino().add(s);
+                    usuario.getPlaceIdDestino().put("destino4",s);
                 }
             }
         });
