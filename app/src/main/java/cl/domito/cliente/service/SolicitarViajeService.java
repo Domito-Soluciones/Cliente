@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -31,9 +32,13 @@ public class SolicitarViajeService extends Service {
     int estadoServicio = 0;
 
     public static boolean TERMINAR = true;
+    public static boolean NOT_LLEGANDO = false;
+    public static boolean NOT_LLEGO = false;
     public static final String OCULTAR_LAYOUT_SERVICIO = "0";
     public static final String MOSTRAR_NOTIFICACION_SERVICIO= "1";
     public static final String CREAR_MARCADOR_MOVIL = "2";
+    public static final String MOSTRAR_NOTIFICACION_LLEGANDO= "3";
+    public static final String MOSTRAR_NOTIFICACION_LLEGO= "4";
 
 
     @Override
@@ -52,6 +57,7 @@ public class SolicitarViajeService extends Service {
             @Override
             public void run() {
                 JSONObject jsonObject = null;
+                Usuario usuario = Usuario.getInstance();
                 while (estadoServicio < 2) {
                     try {
                         System.out.println("esperando que el id sea mayor a 2");
@@ -74,7 +80,29 @@ public class SolicitarViajeService extends Service {
                         sendMessage(MOSTRAR_NOTIFICACION_SERVICIO,null);
                         System.out.println("servicio asignado a el movil " + jsonObject.getString("servicio_movil") + " ahora debo cerrar el activity");
                         GetConductorOperation getConductorOperation = new GetConductorOperation();
-                        Usuario.getInstance().setDatosConductor(getConductorOperation.execute(jsonObject.getString("servicio_movil")).get());
+                        usuario.setDatosConductor(getConductorOperation.execute(jsonObject.getString("servicio_movil")).get());
+                        Location ubicacionConductor = new Location("");
+                        ubicacionConductor.setLatitude(usuario.getDatosConductor().getDouble("movil_lat"));//your coords of course
+                        ubicacionConductor.setLongitude(usuario.getDatosConductor().getDouble("movil_lon"));
+                        float distancia = usuario.getLocation().distanceTo(ubicacionConductor);
+                        if(distancia < 100 && distancia > 10)
+                        {
+                            if(NOT_LLEGANDO) {
+                                sendMessage(MOSTRAR_NOTIFICACION_LLEGANDO, null);
+                                NOT_LLEGANDO = false;
+                            }
+                            System.out.println("esta llegando");
+                        }
+                        else if(distancia < 10)
+                        {
+                            if(NOT_LLEGO) {
+                                sendMessage(MOSTRAR_NOTIFICACION_LLEGO, null);
+                                NOT_LLEGO = false;
+                            }
+                            System.out.println("llego");
+                        }
+                        System.out.println("distancia: "+distancia);
+                        usuario.setDistanciaConductor(distancia);
                         sendMessage(CREAR_MARCADOR_MOVIL,null);
                         sendMessage(OCULTAR_LAYOUT_SERVICIO,null);
                         estadoServicio = 0;

@@ -37,8 +37,8 @@ public class PlacesOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        String latitud = Usuario.getInstance().getLatitud() + "";
-        String longitud = Usuario.getInstance().getLongitud() + "";
+        String latitud = Usuario.getInstance().getLocation().getLatitude() + "";
+        String longitud = Usuario.getInstance().getLocation().getLongitude() + "";
         MapsActivity mapsActivity = context.get();
         constraintLayout = mapsActivity.findViewById(R.id.constrainLayoutPlaces);
         textView1 = mapsActivity.findViewById(R.id.textViewRes1);

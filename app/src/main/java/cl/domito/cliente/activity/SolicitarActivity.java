@@ -91,6 +91,12 @@ public class SolicitarActivity extends AppCompatActivity {
                 case SolicitarViajeService.CREAR_MARCADOR_MOVIL:
                         crearMarcador();
                     break;
+                case SolicitarViajeService.MOSTRAR_NOTIFICACION_LLEGANDO:
+                    notificar("Conductor esta llegando","");
+                    break;
+                case SolicitarViajeService.MOSTRAR_NOTIFICACION_LLEGO:
+                    notificar("Conductor llego","");
+                    break;
             }
         }
     };

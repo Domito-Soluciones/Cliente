@@ -1,5 +1,6 @@
 package cl.domito.cliente.dominio;
 
+import android.location.Location;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -33,8 +34,6 @@ public class Usuario {
     private String mail;
     private boolean activo;
     private boolean recordarSession;
-    private double latitud;
-    private double longitud;
     private boolean buscaServicio;
     private String placeIdOrigen;
     private Map<String,String> placeIdDestino = new HashMap();
@@ -48,6 +47,8 @@ public class Usuario {
     private LatLng ubicacion;
     private boolean enProceso;
     private JSONObject datosConductor;
+    private float distanciaConductor;
+    private Location location;
 
     public static synchronized Usuario getInstance(){
         if(instance == null){
@@ -134,22 +135,6 @@ public class Usuario {
 
     public void setRecordarSession(boolean recordarSession) {
         this.recordarSession = recordarSession;
-    }
-
-    public double getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(double latitud) {
-        this.latitud = latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
     }
 
     public boolean isBuscaServicio() {
@@ -254,5 +239,21 @@ public class Usuario {
 
     public void setDatosConductor(JSONObject datosConductor) {
         this.datosConductor = datosConductor;
+    }
+
+    public float getDistanciaConductor() {
+        return distanciaConductor;
+    }
+
+    public void setDistanciaConductor(float distanciaConductor) {
+        this.distanciaConductor = distanciaConductor;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

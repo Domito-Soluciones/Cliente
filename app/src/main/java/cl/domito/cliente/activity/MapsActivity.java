@@ -2,6 +2,7 @@ package cl.domito.cliente.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -384,11 +387,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageViewLlamar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    llamar();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                llamar();
             }
         });
 
@@ -423,10 +422,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String numero = null;
         try {
             numero = Usuario.getInstance().getDatosConductor().getJSONObject("movil_conductor").getString("conductor_celular");
-        } catch (JSONException e) {
+            ActivityUtils.llamar(this,numero);
+        } catch (Exception e) {
+            if(e instanceof ActivityNotFoundException)
+            {
+                Toast.makeText(this,"Número inválido consulte con el administrador",Toast.LENGTH_LONG).show();
+            }
             e.printStackTrace();
         }
-        ActivityUtils.llamar(this,numero);
     }
 
     private void abrirBuscadorServicios()
@@ -439,7 +442,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageViewPoint.setVisibility(View.VISIBLE);
         Usuario usuario = Usuario.getInstance();
         AddressOperation addressOperation = new AddressOperation(this);
-        addressOperation.execute(usuario.getLatitud()+"",usuario.getLongitud() + "");
+        addressOperation.execute(usuario.getLocation().getLatitude()+"",usuario.getLocation().getLongitude() + "");
     }
 
     private void volver()
@@ -661,7 +664,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng ubicacionUsuario = usuario.getUbicacion();
                     LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
                     latLngBounds.include(ubicacionConductor).include(ubicacionUsuario);
-                    mMap.addMarker(new MarkerOptions().position(ubicacionConductor));
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.furgoneta_negro));
+                    mMap.addMarker(markerOptions.position(ubicacionConductor));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
                     String patente = conductor.getString("movil_patente");
                     String marca = conductor.getString("movil_marca");
@@ -677,6 +681,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     e.printStackTrace();
 
                 }
+                buttonCancelar.setText("Cancelar");
                 constrainLayoutConductor.setVisibility(View.VISIBLE);
             }
             else
@@ -758,15 +763,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         constraintLayoutIngresaViaje.setLayoutParams(newLayoutParams);
 
-    }
-
-
-    private void crearMarcador()
-    {
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        mMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     private void cancelar()

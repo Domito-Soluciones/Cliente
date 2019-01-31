@@ -185,8 +185,7 @@ public class ActivityUtils {
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
         if(!Usuario.getInstance().isEnProceso()) {
             if (loc != null) {
-                Usuario.getInstance().setLatitud(loc.getLatitude());
-                Usuario.getInstance().setLongitud(loc.getLongitude());
+                Usuario.getInstance().setLocation(loc);
                 LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

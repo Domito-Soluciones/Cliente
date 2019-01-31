@@ -21,6 +21,7 @@ import cl.domito.cliente.R;
 import cl.domito.cliente.activity.MapsActivity;
 import cl.domito.cliente.dominio.Usuario;
 import cl.domito.cliente.http.Utilidades;
+import cl.domito.cliente.service.SolicitarViajeService;
 
 public class CancelarViajeOperation extends AsyncTask<Object, Void, Void> {
 
@@ -78,6 +79,8 @@ public class CancelarViajeOperation extends AsyncTask<Object, Void, Void> {
             editTextDestino2.setText("");
             editTextDestino3.setText("");
             editTextDestino4.setText("");
+            SolicitarViajeService.NOT_LLEGANDO = true;
+            SolicitarViajeService.NOT_LLEGO = true;
         }
     }
 }
